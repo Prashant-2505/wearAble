@@ -1,46 +1,56 @@
 import jwt from 'jsonwebtoken';
+import userModel from '../model/userModel.js'; // Import your userModel
 
-// protected route token based
-
-export const 
-requireSignIn = (req, res, next) => {
-    const token = req.headers.authorization;
-
-    if (!token) {
-        return res.status(401).json({ error: 'Missing token' });
-    }
-
+// Protected route token based
+export const requireSignIn = (req, res, next) => {
     try {
+        const token = req.headers.authorization;
+
+        if (!token) {
+            return res.status(401).send({
+                success: false,
+                message: "Unauthorized: Token missing",
+            });
+
+        }
+
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
         next();
     } catch (error) {
-        console.error('Error verifying token:', error);
-        return res.status(401).json({ error: 'Invalid token' });
+        console.log(error);
+        res.status(401).send({
+            success: false,
+            message: "Unauthorized: Invalid token",
+        });
     }
 };
-
-
-
-// admin acess
+// Admin access
 export const isAdmin = async (req, res, next) => {
     try {
-        const user = await userModel.findById(req.user._id)
-    if (user.role !== 1) {
-        return res.status(401).send({
-            success: false,
-            message: "unauthorize acess"
-        })
-    }
-    else {
-        next()
-    }
+        const user = await userModel.findById(req.user._id);
+
+        if (!user) {
+            return res.status(404).send({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        if (user.role !== 1) {
+            return res.status(403).send({
+                success: false,
+                message: "Unauthorized: Admin access required",
+            });
+        }
+
+        next();
     } catch (error) {
-         console.log(error)
-         res.status(401).send({
-            success:false,
-            error,
-            message:"error in admin middleware"
-         })
+        console.error(error);
+        res.status(500).send({
+            success: false,
+            message: "Internal Server Error",
+            error: error.message, // Sending only the error message
+        });
     }
-}
+};

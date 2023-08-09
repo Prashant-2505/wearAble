@@ -37,6 +37,7 @@ export const registerController = async (req, res) => {
         });
 
 
+
     } catch (error) {
         console.log(error)
         return res.status(500).send({
@@ -49,7 +50,7 @@ export const registerController = async (req, res) => {
 
 
 // login controller
-import jwt from 'jsonwebtoken';
+
 
 export const loginController = async (req, res) => {
     try {
@@ -57,7 +58,7 @@ export const loginController = async (req, res) => {
 
         // validation
         if (!email || !password) {
-            return res.status(404).send({
+            return res.status(400).send({
                 success: false,
                 message: "Invalid email or password",
             });
@@ -72,18 +73,21 @@ export const loginController = async (req, res) => {
             });
         }
 
-        const match = await comparePassword(password, user.password); // Pass the hashed password stored in the user object
+        const match = await comparePassword(password, user.password);
         if (!match) {
-            return res.status(200).send({
+            return res.status(401).send({
                 success: false,
                 message: "Invalid Password",
             });
         }
 
         // Generate token
-        const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, {
+        const token = JWT.sign({ _id: user._id }, process.env.JWT_SECRET, {
             expiresIn: "7d",
         });
+
+        // Send the token in the response headers
+        res.set('Authorization', ` ${token}`);
 
         res.status(200).send({
             success: true,
@@ -95,7 +99,6 @@ export const loginController = async (req, res) => {
                 phone: user.phone,
                 address: user.address,
                 role: user.role,
-              
             },
             token
         });
@@ -108,6 +111,7 @@ export const loginController = async (req, res) => {
         });
     }
 };
+
 
 
 

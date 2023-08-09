@@ -1,6 +1,6 @@
 import express from 'express'
 import { forgotPasswordController, loginController, logoutController, privateRouteController, registerController, testController, updateProfileController } from '../controller/authController.js'
-import { requireSignIn } from '../middleware/authMiddleware.js'
+import { isAdmin, requireSignIn } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
@@ -17,7 +17,10 @@ router.post('/forgot-password', forgotPasswordController)
 //test route
 router.get('/test',requireSignIn,testController)
 //protected user route auth
-router.get("/user-auth",privateRouteController, requireSignIn);
+router.get("/user-auth",requireSignIn,privateRouteController );
+//  admin route
+router.get("/admin-auth",requireSignIn,isAdmin,privateRouteController)
+
 
 
 

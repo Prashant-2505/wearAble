@@ -4,16 +4,15 @@ import { AiOutlineArrowDown } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
 
-const DropdownMenu = ({ title, options, setHoveredMenu, isMenuOpen, setIsMenuOpen }) => {
+const DropdownMenu = ({ title, options, hoveredMenu, setHoveredMenu }) => {
+  const isMenuOpen = hoveredMenu === title;
+
   const handleMenuToggle = () => {
-    setIsMenuOpen(!isMenuOpen);
-    setHoveredMenu(title);
+    setHoveredMenu(isMenuOpen ? null : title);
   };
 
-
-
   return (
-    <div onMouseEnter={handleMenuToggle} onMouseLeave={() => setHoveredMenu(null)}>
+    <div onMouseEnter={handleMenuToggle} onMouseLeave={handleMenuToggle}>
       <button className='D-List'>
         <h3>{title}</h3>
         <AiOutlineArrowDown />
@@ -35,48 +34,54 @@ const DropdownMenu = ({ title, options, setHoveredMenu, isMenuOpen, setIsMenuOpe
 
 const Header = () => {
   const [hoveredMenu, setHoveredMenu] = useState(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(0);
-  const [curState, setCurState] = useState("")
-  const navigate = useNavigate()
-  const [auth] = useAuth()
+  const navigate = useNavigate();
+  const [auth] = useAuth();
 
-  useEffect(() => {
-    setCurState(auth.user ? "Profile" : "Login");
-  }, [auth.user]);
-  
+  const curState = auth?.user?.role === 1 ? 'Admin' : auth?.user ? 'Profile' : 'Login';
+
+  const redirect = () => {
+    if (auth?.user) {
+      if (auth.user.role === 1) {
+        navigate('/admin-dashboard');
+      } else {
+        navigate('/profile');
+      }
+    } else {
+      navigate('/login');
+    }
+  };
 
   return (
     <div className='header'>
       <div className='brand'>
-        <h2 onClick={()=>navigate('/')} className='logo'>wearAble</h2>
+        <h2 onClick={() => navigate('/')} className='logo'>
+          wearAble
+        </h2>
       </div>
       <div className='header-left '>
         <ul className='list'>
           <li>
             <DropdownMenu
-              title={`Men`}
+              title='Men'
               options={['Option 1', 'Option 2', 'Option 3', 'Option 4']}
+              hoveredMenu={hoveredMenu}
               setHoveredMenu={setHoveredMenu}
-              isMenuOpen={hoveredMenu === 'Men'}
-              setIsMenuOpen={setIsMenuOpen}
             />
           </li>
           <li>
             <DropdownMenu
               title='Women'
               options={['Option 1', 'Option 2', 'Option 3', 'Option 4']}
+              hoveredMenu={hoveredMenu}
               setHoveredMenu={setHoveredMenu}
-              isMenuOpen={hoveredMenu === 'Women'}
-              setIsMenuOpen={setIsMenuOpen}
             />
           </li>
           <li>
             <DropdownMenu
               title='Child'
               options={['Option 1', 'Option 2', 'Option 3', 'Option 4']}
+              hoveredMenu={hoveredMenu}
               setHoveredMenu={setHoveredMenu}
-              isMenuOpen={hoveredMenu === 'Child'}
-              setIsMenuOpen={setIsMenuOpen}
             />
           </li>
           <li>
@@ -87,10 +92,10 @@ const Header = () => {
         </ul>
       </div>
       <div className='header-right'>
-      <h3 onClick={() => navigate(auth?.user ? '/profile' : '/login')}>
+        <h3 onClick={redirect}>
           {curState}
-        </h3>     
-          <h3>Cart</h3>
+        </h3>
+        <h3>Cart</h3>
       </div>
     </div>
   );

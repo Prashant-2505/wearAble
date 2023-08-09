@@ -10,6 +10,9 @@ import Login from './page/auth/Login';
 import Profile from './page/profile/Profile';
 import ForgetPassword from './page/auth/ForgetPassword';
 import Private from './privateRoute/PrivateRoute';
+import CreateCategory from './page/admin/category/CreateCategory';
+import PrivateRoute from './privateRoute/PrivateAdminRoute';
+import AdminDasbaord from './page/admin/AdminDashbaord'
 
 function App() {
   return (
@@ -25,8 +28,20 @@ function App() {
           <Route path="/profile" element={<Private />} >
             <Route path="/profile" element={<Profile />} />
           </Route>
-          
+
           <Route path="/forget-password" element={<ForgetPassword />} />
+
+
+           // admin route
+          <Route path="/admin-dashboard" element={<PrivateRoute />}>
+            <Route index element={<AdminDasbaord />} />
+          </Route>
+
+        
+
+          <Route path="/create-category" element={<PrivateRoute />}>
+            <Route path="/create-category" element={<CreateCategory />} />
+          </Route>
 
         </Routes>
       </BrowserRouter>

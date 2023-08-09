@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import connectDb from './config/db.js'
 import morgan from 'morgan'
 import authRoute from "./routes/authRoute.js"
+// import categoryRoute from "./routes/categoryRoutes.js"
 import cors from 'cors'
 
 //config env
@@ -20,7 +21,10 @@ app.use(cors())
 
 
 // routes
+// auth route
 app.use('/api/v2/auth',authRoute)
+// category route
+// app.use('/api/v2/category',categoryRoute)
 
 
 const port = process.env.PORT || 8080
