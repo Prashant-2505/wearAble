@@ -13,6 +13,8 @@ import Private from './privateRoute/PrivateRoute';
 import CreateCategory from './page/admin/category/CreateCategory';
 import PrivateRoute from './privateRoute/PrivateAdminRoute';
 import AdminDasbaord from './page/admin/AdminDashbaord'
+import CreateProduct from './page/admin/CreatePRoduct/CreateProduct';
+import Product from './page/admin/product/Product';
 
 function App() {
   return (
@@ -42,6 +44,15 @@ function App() {
           <Route path="/create-category" element={<PrivateRoute />}>
             <Route path="/create-category" element={<CreateCategory />} />
           </Route>
+
+          <Route path="/create-product" element={<PrivateRoute />}>
+            <Route path="/create-product" element={<CreateProduct />} />
+          </Route>
+
+          <Route path="/product" element={<PrivateRoute />}>
+            <Route path="/product" element={<Product />} />
+          </Route>
+          
 
         </Routes>
       </BrowserRouter>

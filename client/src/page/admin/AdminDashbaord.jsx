@@ -86,10 +86,11 @@ const AdminDashbaord = () => {
                         <h1>Dashboard</h1>
 
                         <div className="admin-dashboard">
-                            <button onClick={()=>navigate('/create-product')}>Create Product</button>
-                            <button onClick={()=>navigate('/products')}>View Product</button>
-                            <button onClick={()=>navigate('/create-category')}>Create Category</button>
-                            <button onClick={()=>navigate('/categories')}>View Category</button>
+                            <button onClick={() => navigate('/create-category')}>Create Category</button>
+
+                            <button onClick={() => navigate('/create-product')}>Create Product</button>
+                            <button onClick={() => navigate('/product')}> Product</button>
+
                         </div>
 
                     </div>
