@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom'; // Import useParams
 import Layout from '../../../layout/Layout';
-import "./CreateProduct.css";
+import './SingleProduct.css';
 import axios from 'axios';
 import { Select, notification } from "antd";
 const { Option } = Select;
 
-const CreateProduct = () => {
+const SingleProduct = () => {
+
+
     const [productName, setProductName] = useState('');
+    const [productId, setProductId] = useState('');
     const [price, setPrice] = useState('');
     const [category, setCategory] = useState('');
     const [quantity, setQuantity] = useState('');
@@ -16,45 +20,33 @@ const CreateProduct = () => {
     const [categories, setCategories] = useState([])
 
 
+    const { slug } = useParams(); // Extract the slug from route params
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+
+    // single product
+    const fetchSingleProduct = async () => {
         try {
-            const productFormData = new FormData();
-            productFormData.append("name", productName);
-            productFormData.append("description", productData);
-            productFormData.append("price", price);
-            productFormData.append("quantity", quantity);
-            productFormData.append("photos", photos);
-            productFormData.append("category", category);
-            productFormData.append("colors", colorInput); // Convert the colors array to a JSON string
-
-            const response = await axios.post(
-                `${process.env.REACT_APP_API}/api/v2/product/create-product`,
-                productFormData
-            );
-
-            if (response.data.success) {
-                notification.success({
-                    message: 'Product Created',
-                    description: response.data.message,
-                });
-            } else {
-                notification.error({
-                    message: 'Product Creation Failed',
-                    description: response.data.message,
-                });
-            }
+            const res = await axios.get(`${process.env.REACT_APP_API}/api/v2/product/single-product/${slug}`);
+            setProductName(res.data.product.name)
+            setPrice(res.data.product.price)
+            setQuantity(res.data.product.quantity)
+            setProductData(res.data.product.description)
+            setColorInput(res.data.product.colors)
+            setCategory(res.data.product.category)
+            setProductId(res.data.product._id)
 
         } catch (error) {
             console.error(error);
-            notification.error({
-                message: 'Error',
-                description: 'An error occurred while creating the product.',
-            });
         }
     };
+    useEffect(() => {
+        // Fetch single product when component mounts
+        fetchSingleProduct();
+    }, []);
 
+
+
+    // all category
     const getAllCategory = async () => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v2/category/get-category`);
@@ -74,10 +66,59 @@ const CreateProduct = () => {
         getAllCategory();
     }, []);
 
+
+    // update function
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+
+
+            const productFormData = new FormData();
+            productFormData.append("name", productName);
+            productFormData.append("description", productData);
+            productFormData.append("price", price);
+            productFormData.append("quantity", quantity);
+            productFormData.append("category", productId);
+            photos && productFormData.append("photos", photos);
+            productFormData.append("colors", colorInput); // Convert the colors array to a JSON string
+            const response = await axios.put(
+                `${process.env.REACT_APP_API}/api/v2/product/update-product/${productId}`,
+                productFormData
+            );
+
+            if (response.data.success) {
+                notification.success({
+                    message: 'Product Updated',
+                    description: response.data.message,
+                });
+            } else {
+                notification.error({
+                    message: 'Product Updation Failed',
+                    description: response.data.message,
+                });
+            }
+
+        } catch (error) {
+            console.error(error);
+            notification.error({
+                message: 'm',
+                description: 'An error occurred while updating the product.',
+            });
+        }
+    };
+
+
+
+
+
+
+
+
+
     return (
         <Layout>
             <div className="Create-Product">
-                <h2>Create a New Product</h2>
+                <h2>Update a  Product</h2>
                 <form className='p-form' onSubmit={handleSubmit}>
                     <input required type="text" placeholder='Product name' value={productName} onChange={(e) => setProductName(e.target.value)} />
                     <Select
@@ -106,13 +147,33 @@ const CreateProduct = () => {
                         value={colorInput.join(',')}
                         onChange={(e) => setColorInput(e.target.value.split(',').map(color => color.trim()))}
                     />
-                    <input required className='img-input' type="file" accept="image/*"  onChange={(e) => setPhotos(e.target.files[0])} />
 
-                    <button className="submit">Create Product</button>
+                    <div className="mb-3">
+                        {photos ? (
+                            <div >
+                                <img
+                                    src={URL.createObjectURL(photos)}
+                                    alt="product_photo"
+                                    className="p-img"
+                                />
+                            </div>
+                        ) :
+                            (
+                                <div >
+                                    <img
+                                        src={`${process.env.REACT_APP_API}/api/v2/product/get-photo/${productId}`}
+                                        alt="product_photo"
+                                        className="p-img"
+                                    />
+                                </div>
+                            )}
+                    </div>
+
+                    <button className="submit">Update Product</button>
                 </form>
             </div>
         </Layout>
     );
 };
 
-export default CreateProduct;
+export default SingleProduct;

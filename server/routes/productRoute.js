@@ -7,14 +7,14 @@ const router = express.Router();
 
 // create product
 router.post('/create-product', formidable(),createProductController)
-// get product 
+// get all product 
 router.get('/get-product',getProductController)
 // get single product
 router.get('/single-product/:slug',getSingleProductController)
 // get photo
 router.get('/get-photo/:pid',getPhotoController)
 // delete product
-router.delete('/delete-product',deleteProductController)
+router.delete('/delete-product/:pid',deleteProductController)
 // update product
-router.put('/update-product',updateProductController)
+router.put('/update-product/:productId',formidable(),updateProductController)
 export default router;

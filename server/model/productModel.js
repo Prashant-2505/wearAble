@@ -22,15 +22,12 @@ const productSchema = new mongoose.Schema({
         ref: "productCategory",
         required: true,
     },
-    color: {
-        type: [String],  // Corrected the array type declaration
-        required: true,
-    },
+    colors: [String],
     quantity: {
         type: Number,
         required: true,
     },
-    photo: {
+    photos: {
         data: Buffer,
         contentType: String,
     },

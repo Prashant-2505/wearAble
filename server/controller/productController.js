@@ -6,8 +6,8 @@ import fs from 'fs'
 // create product
 export const createProductController = async (req, res) => {
     try {
-        const { name, color, price, category, quantity, shipping, description } = req.fields
-        const { photo } = req.files
+        const { name, colors, price, category, quantity, shipping, description } = req.fields
+        const { photos } = req.files
         // Validation
         if (!name) return res.status(400).send({ error: 'Name is required' });
         if (!description) return res.status(400).send({ error: 'Description is required' });
@@ -15,28 +15,31 @@ export const createProductController = async (req, res) => {
         if (!category) return res.status(400).send({ error: 'Category is required' });
         if (!quantity) return res.status(400).send({ error: 'Quantity is required' });
 
-        if (photo && photo.size > 1000000) {
+        if (photos && photos.size > 1000000) {
             return res.status(400).send({ error: 'Photo should be less than 1 MB in size' });
         }
-
+    console.log("1")
         const product = new productModel(
             {
                 name,
                 description,
                 price,
-                category,
+                category ,
                 quantity,
                 shipping,
-                color,
+                colors: colors.split(',').map(color => color.trim()),
                 slug: slugify(name),
             }
 
         )
+        console.log("2")
 
-        if (photo) {
-            product.photo.data = fs.readFileSync(photo.path);
-            product.photo.contentType = photo.type;
+        if (photos) {
+            product.photos.data = fs.readFileSync(photos.path);
+            product.photos.contentType = photos.type;
         }
+        console.log('3')
+
         await product.save()
         res.status(201).send({
             success: true,
@@ -116,10 +119,10 @@ export const getSingleProductController = async (req, res) => {
 export const getPhotoController = async (req, res) => {
     try {
         const { pid } = req.params
-        const product = await productModel.findById(pid).select("photo")
-        if (product.photo.data) {
-            res.set('Content-type', product.photo.contentType)
-            return res.status(200).send(product.photo.data)
+        const product = await productModel.findById(pid).select("photos")
+        if (product.photos.data) {
+            res.set('Content-type', product.photos.contentType)
+            return res.status(200).send(product.photos.data)
         }
 
     } catch (error) {
@@ -166,27 +169,32 @@ export const deleteProductController = async (req, res) => {
 // update product 
 export const updateProductController = async (req, res) => {
     try {
-        const { name, description, price, category, quantity, shipping } = req.fields;
-        const { photo } = req.files;
+        const { name, description,colors, price, quantity, shipping } = req.fields;
+        const { photos } = req.files;
 
+        console.log("1")
+        
         // Validation
         if (!name) return res.status(400).send({ error: 'Name is required' });
         if (!description) return res.status(400).send({ error: 'Description is required' });
         if (!price) return res.status(400).send({ error: 'Price is required' });
-        if (!category) return res.status(400).send({ error: 'Category is required' });
         if (!quantity) return res.status(400).send({ error: 'Quantity is required' });
 
-        if (photo && photo.size > 1000000) {
+
+
+        if (photos && photos.size > 1000000) {
             return res.status(400).send({ error: 'Photo should be less than 1 MB in size' });
         }
 
-        const { pid } = req.params
-        const product = await productModel.findByIdAndUpdate(pid,
-            { ...req.fields, slug: slugify(name) }, { new: true });
+        const colorsArray = colors.split(',').map(color => color.trim());
 
-        if (photo) {
-            product.photo.data = fs.readFileSync(photo.path);
-            product.photo.contentType = photo.type;
+        const { productId } = req.params
+        const product = await productModel.findByIdAndUpdate(productId,
+            { ...req.fields,colors: colorsArray, slug: slugify(name) }, { new: true });
+
+        if (photos) {
+            product.photos.data = fs.readFileSync(photos.path);
+            product.photos.contentType = photos.type;
         }
 
         await product.save();

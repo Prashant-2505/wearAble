@@ -4,10 +4,10 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import Home from './page/Home';
+import Home from './page/home/Home';
 import Register from './page/auth/Register';
 import Login from './page/auth/Login';
-import Profile from './page/profile/Profile';
+import Profile from './page/user/profile/Profile';
 import ForgetPassword from './page/auth/ForgetPassword';
 import Private from './privateRoute/PrivateRoute';
 import CreateCategory from './page/admin/category/CreateCategory';
@@ -15,6 +15,7 @@ import PrivateRoute from './privateRoute/PrivateAdminRoute';
 import AdminDasbaord from './page/admin/AdminDashbaord'
 import CreateProduct from './page/admin/CreatePRoduct/CreateProduct';
 import Product from './page/admin/product/Product';
+import SingleProduct from './page/admin/singleProduct/SingleProduct';
 
 function App() {
   return (
@@ -34,12 +35,12 @@ function App() {
           <Route path="/forget-password" element={<ForgetPassword />} />
 
 
-           // admin route
+           {/* // admin route */}
           <Route path="/admin-dashboard" element={<PrivateRoute />}>
             <Route index element={<AdminDasbaord />} />
           </Route>
 
-        
+
 
           <Route path="/create-category" element={<PrivateRoute />}>
             <Route path="/create-category" element={<CreateCategory />} />
@@ -49,10 +50,15 @@ function App() {
             <Route path="/create-product" element={<CreateProduct />} />
           </Route>
 
-          <Route path="/product" element={<PrivateRoute />}>
-            <Route path="/product" element={<Product />} />
+    
+          <Route path="/products" element={<PrivateRoute />}>
+            <Route path="/products" element={<Product />} />
           </Route>
-          
+
+          <Route path="/admin/product/:slug" element={<PrivateRoute />}>
+            <Route path="/admin/product/:slug" element={<SingleProduct />} />
+          </Route>
+
 
         </Routes>
       </BrowserRouter>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../../layout/Layout';
-import '../profile/Profile.css';
+import '../user/profile/Profile.css';
 import { useAuth } from '../../context/authContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -89,7 +89,7 @@ const AdminDashbaord = () => {
                             <button onClick={() => navigate('/create-category')}>Create Category</button>
 
                             <button onClick={() => navigate('/create-product')}>Create Product</button>
-                            <button onClick={() => navigate('/product')}> Product</button>
+                            <button onClick={() => navigate('/products')}> Product</button>
 
                         </div>
 

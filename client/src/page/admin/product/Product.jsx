@@ -29,7 +29,7 @@ const Product = () => {
     return (
         <Layout>
             <div className="Product">
-                <ProductLayout products={products} />
+                <ProductLayout products={products} isAdmin={true}/>
             </div>
         </Layout>
     );

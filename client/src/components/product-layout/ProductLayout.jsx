@@ -1,56 +1,67 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './ProductLayout.css';
+import { Link } from 'react-router-dom';
+import { MdCancel } from 'react-icons/md'
+import axios from 'axios';
 
-const ProductLayout = ({ products }) => {
-    const [showBtn, setShowBtn] = useState(false);
+const ProductLayout = ({ products, isAdmin }) => {
 
-    // const handleMouseEnter = () => {
-    //     setShowBtn(true);
-    // };
+    const deleteProduct = async (pid) => {
+        try {
+            const res = await axios.delete(`${process.env.REACT_APP_API}/api/v2/product/delete-product/${pid}`)
+            if (res?.data?.success) {
+                alert(res.data.message)
+            }
 
-    // const handleMouseLeave = () => {
-    //     setShowBtn(false);
-    // };
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <div className='Product-layout'>
             {products.map((p) => (
-                <div
-                    className="product-card"
-                    key={p._id}
+               <Link to={isAdmin ? `/admin/product/${p.slug}` : '/'}>
+                    <div
+                        className="product-card"
+                        key={p._id}
+                    >
+                        <div className="product-img">
+                            <img
+                                src={`${process.env.REACT_APP_API}/api/v2/product/get-photo/${p._id}`}
+                                className="card-img-top"
+                                alt={p.name}
+                            />
+                        </div>
+                        <div className="p-data">
+                            <p>{p.name}</p>
+                            <p>Price: {p.price}</p>
 
-                >
-                    <div className="product-img">
-                        <img
-                            src={`${process.env.REACT_APP_API}/api/v2/product/get-photo/${p._id}`}
-                            className="card-img-top"
-                            alt={p.name}
-                        />
+                            <div className="color-container">
+                                {p.colors.map((c, index) => (
+                                    <button className='color-btn' style={{ background: `${c}` }} key={index}></button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {isAdmin ? (
+                            <div>
+                                <button onClick={() => deleteProduct(p._id)} className='delete-btn'>
+                                    <MdCancel className='del-icon' />
+                                </button>
+                            </div>
+
+                        ) : (null)}
+                        {!isAdmin ? (
+                            <>
+                                <div className="p-cart-btn">
+                                    <button className="quickAdd">quick add</button>
+                                </div>
+                            </>
+                        ) : null}
                     </div>
-                    <div className="p-data">
-                        <p>Name: {p.name}</p>
-                        <p>{p.color[0]}</p>
-                        <p>Price: {p.price}</p>
-                        <p>{p.description}</p>
-                        
-                        {p.color.map((c, index) => (
-                            <button
-                                key={index}
-                                className='color-btn'
-                                style={{ background: `${c}` }}
-                                
-                            ></button>
-                        ))}
-                    </div>
-                    <div className="p-cart-btn">
-                        <button className="quickAdd">quick add</button>
-                    </div>
-                </div>
+                </Link>
             ))}
-
-
-
-
         </div>
     );
 };
