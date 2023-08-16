@@ -1,18 +1,12 @@
-.Product
-{
+.product-container {
     padding-top: 80px;
     width: 100vw;
-    height: auto;
 }
-.p-card
-{
-    border: 2px pink solid;
-    width:40%;
-    height: 70vh;
-}
-.p-img
-{
-    height: 50vh;
-    width: 100%;
-    border: 2px red solid;
+
+.products {
+padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-column-gap: 2rem;
+    grid-row-gap: 2rem;
 }

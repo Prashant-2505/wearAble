@@ -24,6 +24,9 @@ function App() {
       <BrowserRouter>
 
         <Routes>
+
+          {/* users route */}
+
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -35,11 +38,12 @@ function App() {
           <Route path="/forget-password" element={<ForgetPassword />} />
 
 
+
+
            {/* // admin route */}
           <Route path="/admin-dashboard" element={<PrivateRoute />}>
             <Route index element={<AdminDasbaord />} />
           </Route>
-
 
 
           <Route path="/create-category" element={<PrivateRoute />}>

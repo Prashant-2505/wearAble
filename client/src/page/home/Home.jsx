@@ -3,16 +3,16 @@ import Layout from '../../layout/Layout'
 import Hero from '../../components/hero/Hero'
 import ProductCrousel from '../../components/ProductCrousel/ProductCrousel'
 import './Home.css'
+import Hero2 from '../../components/hero/Hero2'
+import Banner from '../../components/banner/Banner'
 const Home = () => {
   return (
 
     <Layout>
-        <Hero />
-        <div className='home-crousel'>
-          <h1>Fall in comfort</h1>
-          <p>Our top picks for a consciously cozy season. </p>
-          <ProductCrousel />
-        </div>
+      <Hero />
+      <ProductCrousel />
+      <Hero2/>
+      <Banner/>
     </Layout>
 
   )

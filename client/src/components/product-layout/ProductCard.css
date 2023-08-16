@@ -1,18 +1,6 @@
-.Product-layout {
-    width: 100vw;
-    height: 100%;
-    padding: 3rem;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-column-gap: 20px;
-}
-
-
-
-
 .product-card {
     width: 100%;
-    height: 80%;
+    height: 65vh;
     border-radius: 10px;
     position: relative;
     box-shadow: 6px 15px 15px -3px rgb(174, 147, 147);
@@ -22,48 +10,47 @@
 .product-card:hover {
     cursor: pointer;
     box-shadow: 0 0 0 0;
-
 }
 
 .product-img {
     width: 100%;
-    height: 65%;
+    height: 60%;
 }
 
-.product-img>img {
-    object-fit: cover;
-    height: 100%;
+.card-img {
     width: 100%;
+    height: 100%;
+    object-fit: cover ;
     border-radius: 10px;
-
 }
+
+
+
 
 
 .color-container {
     display: flex;
-    height: 30%;
+    height: 10%;
     padding-bottom: 1em;
 }
 
 .color-btn {
-    height: 10%;
-    width: 1rem;
     margin-right: 1rem;
     border-radius: 50%;
-    height: 1.8rem;
+    height: 1.8em;
     width: 2rem;
 }
 
 .color-btn:hover {
     transform: scale(0.8);
     transition: 0.2s ease-in-out;
-  
+
 }
 
 .p-data {
     padding-top: 1rem;
     padding-left: 5px;
-    height: 35%;
+    height: 30%;
     padding-bottom: 1rem;
 }
 
@@ -78,7 +65,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
-   
+
 }
 
 .quickAdd {
@@ -93,17 +80,15 @@
     transition: 0.3s ease;
 }
 
-.delete-btn
-{
+.delete-btn {
     position: absolute;
     top: 0;
     right: 0;
 }
-.del-icon
-{
+
+.del-icon {
     font-size: 2rem;
     background: blue;
     color: white;
     border-radius: 100%;
-}
-
+} 

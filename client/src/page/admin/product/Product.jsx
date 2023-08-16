@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../../../layout/Layout';
 import './Product.css';
-import ProductLayout from '../../../components/product-layout/ProductLayout';
+import ProductLayout from '../../../components/product-layout/ProductCard';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../../../context/authContext';
 
 const Product = () => {
     const [products, setProducts] = useState([]);
@@ -26,13 +28,37 @@ const Product = () => {
         getAllProducts();
     }, []);
 
+
+    const [auth] = useAuth()
+
+
     return (
-        <Layout>
-            <div className="Product">
-                <ProductLayout products={products} isAdmin={true}/>
-            </div>
-        </Layout>
+
+      <Layout>
+          <div className='product-container'>
+              <div className="products">
+              {products.map((p) => (
+                <Link to={auth.user.role === 1 ? `/admin/product/${p.slug}` : '/'}>
+                    <ProductLayout name={p.name} price={p.price} description={p.description} color={p.colors} isAdmin={true} id={p._id} />
+                </Link>
+            ))}
+              </div>
+        </div>
+      </Layout>
+
     );
 };
 
 export default Product;
+
+
+
+
+
+
+
+{/* <Layout>
+            <div className="Product">
+                <ProductLayout products={products} isAdmin={true}/>
+            </div>
+        </Layout> */}

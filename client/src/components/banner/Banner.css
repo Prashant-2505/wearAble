@@ -1,0 +1,12 @@
+.Banner
+{
+    width: 100vw;
+    padding: 3rem;
+    height: 100%;
+}
+.Banner>h1
+{
+   text-align: center;
+    font-size: 2.7rem;
+    padding: 0 20% 0 20%;
+}
