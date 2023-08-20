@@ -11,11 +11,12 @@ const Home = () => {
     <Layout>
       <Hero />
       <ProductCrousel />
-      <Hero2/>
-      <Banner/>
+      <Hero2 />
+      <Banner />
     </Layout>
 
   )
 }
 
 export default Home
+  

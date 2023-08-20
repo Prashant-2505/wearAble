@@ -3,13 +3,13 @@ import './ProductCrousel.css';
 import axios from 'axios';
 import ProductCard from '../product-layout/ProductCard';
 import { Link } from 'react-router-dom';
-import {FcNext,FcPrevious} from 'react-icons/fc'
+import { FcNext, FcPrevious } from 'react-icons/fc'
 
 const ProductCrousel = () => {
     const [products, setProducts] = useState([]);
     const [index, setIndex] = useState(0);
     const [nextIndex, setNextIndex] = useState(5);
-    const[length, setLength] = useState(0)
+    const [length, setLength] = useState(0)
 
 
     const allProducts = async () => {
@@ -53,7 +53,7 @@ const ProductCrousel = () => {
 
             >
                 {products.slice(index, nextIndex).map((p) => (
-                    <Link to='/' key={p._id}>
+                    <Link to={`/product/${p.slug}`} key={p._id}>
                         <ProductCard
                             name={p.name}
                             price={p.price}
@@ -66,8 +66,8 @@ const ProductCrousel = () => {
                 ))}
             </div>
             <div className='crousel-btn'>
-                <button onClick={previous}><FcPrevious/></button>
-                <button onClick={next}><FcNext/></button>
+                <button onClick={previous}><FcPrevious /></button>
+                <button onClick={next}><FcNext /></button>
             </div>
         </div>
     );

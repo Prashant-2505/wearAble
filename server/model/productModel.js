@@ -23,6 +23,7 @@ const productSchema = new mongoose.Schema({
         required: true,
     },
     colors: [String],
+    sizes: [String],
     quantity: {
         type: Number,
         required: true,

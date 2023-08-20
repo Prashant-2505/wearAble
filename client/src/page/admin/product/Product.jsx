@@ -3,62 +3,73 @@ import Layout from '../../../layout/Layout';
 import './Product.css';
 import ProductLayout from '../../../components/product-layout/ProductCard';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../../../context/authContext';
+import { Link, useParams } from 'react-router-dom';
+import Spinner from '../../../assets/Spinner';
 
-const Product = () => {
+const Product = ({ isAdmin, byCategory }) => {
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const getAllProducts = async () => {
+    const { id } = useParams();
+
+    const fetchProducts = async () => {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API}/api/v2/product/get-product`);
+            let res;
+            if (!byCategory) {
+                res = await axios.get(`${process.env.REACT_APP_API}/api/v2/product/get-product`);
+            } else {
+                res = await axios.get(`${process.env.REACT_APP_API}/api/v2/product/category-products/${id}`);
+            }
 
-            if (res.data) {
+            if (res.data && res.data.product) {
                 setProducts(res.data.product);
             } else {
-                alert('No products found.');
+                console.log('No products found.');
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             alert('An error occurred while fetching products.');
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
-        getAllProducts();
-    }, []);
-
-
-    const [auth] = useAuth()
-
+        fetchProducts();
+    }, [byCategory, id]);
 
     return (
-
-      <Layout>
-          <div className='product-container'>
-              <div className="products">
-              {products.map((p) => (
-                <Link to={auth.user.role === 1 ? `/admin/product/${p.slug}` : '/'}>
-                    <ProductLayout name={p.name} price={p.price} description={p.description} color={p.colors} isAdmin={true} id={p._id} />
-                </Link>
-            ))}
-              </div>
-        </div>
-      </Layout>
-
+        <Layout>
+            <div className='product-container'>
+                {loading ? (
+                    <Spinner />
+                ) : (
+                    products.length === 0 ? (
+                        <div className='no-prod'><h1>No products available</h1>
+                        <p>come back later</p>
+                        </div>
+                    ) : (
+                        <div className="products">
+                            {products.map((p) => (
+                                <Link key={p._id} to={isAdmin ? `/admin/product/${p.slug}` : `/product/${p.slug}`}>
+                                    <ProductLayout
+                                        key={p._id}
+                                        name={p.name}
+                                        price={p.price}
+                                        description={p.description}
+                                        color={p.colors}
+                                        size={p.sizes}
+                                        isAdmin={isAdmin}
+                                        id={p._id}
+                                    />
+                                </Link>
+                            ))}
+                        </div>
+                    )
+                )}
+            </div>
+        </Layout>
     );
 };
 
 export default Product;
-
-
-
-
-
-
-
-{/* <Layout>
-            <div className="Product">
-                <ProductLayout products={products} isAdmin={true}/>
-            </div>
-        </Layout> */}

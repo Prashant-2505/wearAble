@@ -89,7 +89,7 @@ const AdminDashbaord = () => {
                             <button onClick={() => navigate('/create-category')}>Create Category</button>
 
                             <button onClick={() => navigate('/create-product')}>Create Product</button>
-                            <button onClick={() => navigate('/products')}> Product</button>
+                            <button onClick={() => navigate('/admin/products')}> Product</button>
 
                         </div>
 

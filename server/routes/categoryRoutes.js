@@ -1,7 +1,5 @@
 import express from "express"
 import { createCategoryController, deleteCategoryCOntroller, getAllCategoryController, updateCategoryController } from "../controller/categoryController.js";
-import { isAdmin, requireSignIn } from "../middleware/authMiddleware.js";
-import { privateRouteController } from "../controller/authController.js";
 
 const router = express.Router()
 

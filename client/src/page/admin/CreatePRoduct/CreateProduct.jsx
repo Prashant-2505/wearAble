@@ -12,6 +12,7 @@ const CreateProduct = () => {
     const [quantity, setQuantity] = useState('');
     const [productData, setProductData] = useState('');
     const [colorInput, setColorInput] = useState([]);
+    const [sizeInput, setSizeInput] = useState([]);
     const [photos, setPhotos] = useState(null);
     const [categories, setCategories] = useState([])
 
@@ -27,7 +28,8 @@ const CreateProduct = () => {
             productFormData.append("quantity", quantity);
             productFormData.append("photos", photos);
             productFormData.append("category", category);
-            productFormData.append("colors", colorInput); // Convert the colors array to a JSON string
+            productFormData.append("colors", colorInput); // Convert the color array to a JSON string
+            productFormData.append("sizes", sizeInput); // Convert the size array to a JSON string
 
             const response = await axios.post(
                 `${process.env.REACT_APP_API}/api/v2/product/create-product`,
@@ -106,7 +108,13 @@ const CreateProduct = () => {
                         value={colorInput.join(',')}
                         onChange={(e) => setColorInput(e.target.value.split(',').map(color => color.trim()))}
                     />
-                    <input required className='img-input' type="file" accept="image/*"  onChange={(e) => setPhotos(e.target.files[0])} />
+                    <input
+                        type="text"
+                        placeholder="Size (comma-separated)"
+                        value={sizeInput.join(',')}
+                        onChange={(e) => setSizeInput(e.target.value.split(',').map(s => s.trim()))}
+                    />
+                    <input required className='img-input' type="file" accept="image/*" onChange={(e) => setPhotos(e.target.files[0])} />
 
                     <button className="submit">Create Product</button>
                 </form>

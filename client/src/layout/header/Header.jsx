@@ -3,13 +3,18 @@ import './Header.css';
 import { AiOutlineArrowDown } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
+import axios from 'axios';
+import { notification } from 'antd';
 
 const DropdownMenu = ({ title, options, hoveredMenu, setHoveredMenu }) => {
   const isMenuOpen = hoveredMenu === title;
+  const navigate = useNavigate()
 
   const handleMenuToggle = () => {
     setHoveredMenu(isMenuOpen ? null : title);
   };
+
+  const [cat, setCat] = useState('')
 
   return (
     <div onMouseEnter={handleMenuToggle} onMouseLeave={handleMenuToggle}>
@@ -21,8 +26,8 @@ const DropdownMenu = ({ title, options, hoveredMenu, setHoveredMenu }) => {
         <div className='drop-div'>
           <ul>
             {options.map((option, index) => (
-              <li key={index} className='drop-list'>
-                {option}
+              <li key={index} className='drop-list' onClick={() => navigate(`/products/${option._id}`)}>
+                {option.name}
               </li>
             ))}
           </ul>
@@ -34,6 +39,8 @@ const DropdownMenu = ({ title, options, hoveredMenu, setHoveredMenu }) => {
 
 const Header = () => {
   const [hoveredMenu, setHoveredMenu] = useState(null);
+  const [categories, setCategories] = useState([])
+
   const navigate = useNavigate();
   const [auth] = useAuth();
 
@@ -51,6 +58,26 @@ const Header = () => {
     }
   };
 
+
+  const getAllCategory = async () => {
+    try {
+      const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v2/category/get-category`);
+      if (data?.success) {
+        setCategories(data?.category);
+      }
+    } catch (error) {
+      console.error(error);
+      notification.error({
+        message: 'Error',
+        description: 'An error occurred while getting categories.',
+      });
+    }
+  };
+
+  useEffect(() => {
+    getAllCategory();
+  }, []);
+
   return (
     <div className='header'>
       <div className='brand'>
@@ -60,26 +87,11 @@ const Header = () => {
       </div>
       <div className='header-left '>
         <ul className='list'>
+
           <li>
             <DropdownMenu
-              title='Men'
-              options={['Option 1', 'Option 2', 'Option 3', 'Option 4']}
-              hoveredMenu={hoveredMenu}
-              setHoveredMenu={setHoveredMenu}
-            />
-          </li>
-          <li>
-            <DropdownMenu
-              title='Women'
-              options={['Option 1', 'Option 2', 'Option 3', 'Option 4']}
-              hoveredMenu={hoveredMenu}
-              setHoveredMenu={setHoveredMenu}
-            />
-          </li>
-          <li>
-            <DropdownMenu
-              title='Child'
-              options={['Option 1', 'Option 2', 'Option 3', 'Option 4']}
+              title='Category'
+              options={categories}
               hoveredMenu={hoveredMenu}
               setHoveredMenu={setHoveredMenu}
             />

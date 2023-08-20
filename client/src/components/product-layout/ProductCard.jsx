@@ -2,11 +2,10 @@ import React from 'react';
 import './ProductCard.css';
 import { MdCancel } from 'react-icons/md'
 import axios from 'axios';
-import Layout from '../../layout/Layout';
 import { useNavigate } from 'react-router-dom';
 
 
-const ProductLayout = ({ name, price, description, color, id, isAdmin }) => {
+const ProductLayout = ({ name, price, size, color, id, isAdmin }) => {
 
     const navigate = useNavigate()
 
@@ -15,7 +14,7 @@ const ProductLayout = ({ name, price, description, color, id, isAdmin }) => {
             const res = await axios.delete(`${process.env.REACT_APP_API}/api/v2/product/delete-product/${pid}`)
             if (res?.data?.success) {
                 alert(res.data.message)
-                navigate('/products')
+                navigate('/admin/products')
             }
 
 

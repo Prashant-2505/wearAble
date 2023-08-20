@@ -16,6 +16,7 @@ import AdminDasbaord from './page/admin/AdminDashbaord'
 import CreateProduct from './page/admin/CreatePRoduct/CreateProduct';
 import Product from './page/admin/product/Product';
 import SingleProduct from './page/admin/singleProduct/SingleProduct';
+import ProductDetail from './page/user/product/Product.Detail';
 
 function App() {
   return (
@@ -37,10 +38,19 @@ function App() {
 
           <Route path="/forget-password" element={<ForgetPassword />} />
 
+          <Route path="/products" element={<Product isAdmin={false}  byCategory={false} />} />
+
+          <Route path="/products/:id" element={<Product isAdmin={false} byCategory={true} />} />
 
 
 
-           {/* // admin route */}
+
+          <Route path="/product/:slug" element={<ProductDetail />} />
+
+
+
+
+          {/* // admin route */}
           <Route path="/admin-dashboard" element={<PrivateRoute />}>
             <Route index element={<AdminDasbaord />} />
           </Route>
@@ -54,10 +64,11 @@ function App() {
             <Route path="/create-product" element={<CreateProduct />} />
           </Route>
 
-    
-          <Route path="/products" element={<PrivateRoute />}>
-            <Route path="/products" element={<Product />} />
+
+          <Route path="/admin/products" element={<PrivateRoute />}>
+            <Route path="/admin/products" element={<Product isAdmin={true}  byCategory={false}/>} />
           </Route>
+
 
           <Route path="/admin/product/:slug" element={<PrivateRoute />}>
             <Route path="/admin/product/:slug" element={<SingleProduct />} />

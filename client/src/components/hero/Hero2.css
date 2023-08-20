@@ -18,7 +18,7 @@
     width: 100%;
     object-fit: cover;
     transform: scale(1);
-    transition: 0.3s ease-in-out;
+    transition: 0.5s ease-in-out;
 }
 
 .hero2-left>img:hover {
@@ -60,7 +60,7 @@
     width: 100%;
     object-fit: cover;
     transform: scale(1);
-    transition: 0.3s ease-in-out;
+    transition: 0.5s ease-in-out;
 
 }
 

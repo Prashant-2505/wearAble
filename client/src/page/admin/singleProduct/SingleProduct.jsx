@@ -16,6 +16,8 @@ const SingleProduct = () => {
     const [quantity, setQuantity] = useState('');
     const [productData, setProductData] = useState('');
     const [colorInput, setColorInput] = useState([]);
+    const [sizeInput, setSizeInput] = useState([]);
+
     const [photos, setPhotos] = useState(null);
     const [categories, setCategories] = useState([])
 
@@ -32,6 +34,7 @@ const SingleProduct = () => {
             setQuantity(res.data.product.quantity)
             setProductData(res.data.product.description)
             setColorInput(res.data.product.colors)
+            setSizeInput(res.data.product.sizes)
             setCategory(res.data.product.category)
             setProductId(res.data.product._id)
 
@@ -146,6 +149,12 @@ const SingleProduct = () => {
                         placeholder="Colors (comma-separated)"
                         value={colorInput.join(',')}
                         onChange={(e) => setColorInput(e.target.value.split(',').map(color => color.trim()))}
+                    />
+                     <input
+                        type="text"
+                        placeholder="Size (comma-separated)"
+                        value={sizeInput.join(',')}
+                        onChange={(e) => setSizeInput(e.target.value.split(',').map(color => color.trim()))}
                     />
 
                     <div className="mb-3">
