@@ -5,6 +5,7 @@ import ProductCrousel from '../../components/ProductCrousel/ProductCrousel'
 import './Home.css'
 import Hero2 from '../../components/hero/Hero2'
 import Banner from '../../components/banner/Banner'
+import Sale from '../../components/sale/Sale'
 const Home = () => {
   return (
 
@@ -13,6 +14,7 @@ const Home = () => {
       <ProductCrousel />
       <Hero2 />
       <Banner />
+      <Sale/>
     </Layout>
 
   )

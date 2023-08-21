@@ -1,0 +1,32 @@
+.Sale
+{
+    width: 100vw;
+    height: 70vh;
+    position: relative;
+}
+
+.sale-img
+{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+.sale-btn
+{
+    top: 50%;
+    position: absolute;
+    display: flex;
+    left: 50%;
+}
+.sale-btn>button
+{
+    color: white;
+    background: grey;
+    padding: 1rem 3rem 1rem 3rem;
+    font-size: 2rem;
+}
+.sale-btn>button:hover
+{
+    background: rgb(180, 179, 179);
+    transition: 0.3s ease-in-out;
+}

@@ -84,6 +84,30 @@ export const getProductController = async (req, res) => {
 }
 
 
+// get product
+export const getLimitedProductController = async (req, res) => {
+    try {
+
+        const product = await productModel.find({}).select("-photo").populate('category').lean().limit(12)
+        res.status(201).send({
+            success: true,
+            total: product.length,
+            message: 'All Product getting successfully',
+            product,
+
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: 'Error in getting product',
+            error,
+        });
+    }
+}
+
+
+
 
 
 // get single product
