@@ -17,44 +17,37 @@ import CreateProduct from './page/admin/CreatePRoduct/CreateProduct';
 import Product from './page/admin/product/Product';
 import SingleProduct from './page/admin/singleProduct/SingleProduct';
 import ProductDetail from './page/user/product/Product.Detail';
+import Cart from './page/cart/Cart';
 
 function App() {
   return (
     <>
-
       <BrowserRouter>
-
         <Routes>
 
-          {/* users route */}
-
+          {/* Users route */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          <Route path="/profile" element={<Private />} >
-            <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Private />}>
+            <Route index element={<Profile />} />
           </Route>
 
           <Route path="/forget-password" element={<ForgetPassword />} />
 
-          <Route path="/products" element={<Product isAdmin={false}  byCategory={false} />} />
-
-          <Route path="/products/:id" element={<Product isAdmin={false} byCategory={true} />} />
-
-
-
+          <Route path="/products" element={<Product isAdmin={false} byCategory={false} bySearch={false} />} />
+          <Route path="/products/:id" element={<Product isAdmin={false} byCategory={true} bySearch={false} />} />
+          <Route path="/products/search/:keyword" element={<Product isAdmin={false} bySearch={true} />} />
 
           <Route path="/product/:slug" element={<ProductDetail />} />
 
+          <Route path='/cart' element={<Cart/>}/>
 
-
-
-          {/* // admin route */}
+          {/* Admin route */}
           <Route path="/admin-dashboard" element={<PrivateRoute />}>
             <Route index element={<AdminDasbaord />} />
           </Route>
-
 
           <Route path="/create-category" element={<PrivateRoute />}>
             <Route path="/create-category" element={<CreateCategory />} />
@@ -64,20 +57,16 @@ function App() {
             <Route path="/create-product" element={<CreateProduct />} />
           </Route>
 
-
           <Route path="/admin/products" element={<PrivateRoute />}>
-            <Route path="/admin/products" element={<Product isAdmin={true}  byCategory={false}/>} />
+            <Route path="/admin/products" element={<Product isAdmin={true} byCategory={false} />} />
           </Route>
-
 
           <Route path="/admin/product/:slug" element={<PrivateRoute />}>
             <Route path="/admin/product/:slug" element={<SingleProduct />} />
           </Route>
 
-
         </Routes>
       </BrowserRouter>
-
     </>
   );
 }

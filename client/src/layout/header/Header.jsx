@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import './Header.css';
 import { AiOutlineArrowDown } from 'react-icons/ai';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
 import axios from 'axios';
-import { notification } from 'antd';
+import { Badge, notification } from 'antd';
+import { useCart } from '../../context/cart';
 
 const DropdownMenu = ({ title, options, hoveredMenu, setHoveredMenu }) => {
   const isMenuOpen = hoveredMenu === title;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleMenuToggle = () => {
     setHoveredMenu(isMenuOpen ? null : title);
   };
 
-  const [cat, setCat] = useState('')
+  const [cat, setCat] = useState('');
 
   return (
     <div onMouseEnter={handleMenuToggle} onMouseLeave={handleMenuToggle}>
@@ -39,10 +40,13 @@ const DropdownMenu = ({ title, options, hoveredMenu, setHoveredMenu }) => {
 
 const Header = () => {
   const [hoveredMenu, setHoveredMenu] = useState(null);
-  const [categories, setCategories] = useState([])
-
+  const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
   const [auth] = useAuth();
+
+  const [cart] = useCart()
+
+  const [value, setValue] = useState({ keyword: '' }); // Initialize value as an object with a 'keyword' property
 
   const curState = auth?.user?.role === 1 ? 'Admin' : auth?.user ? 'Profile' : 'Login';
 
@@ -57,7 +61,6 @@ const Header = () => {
       navigate('/login');
     }
   };
-
 
   const getAllCategory = async () => {
     try {
@@ -78,6 +81,15 @@ const Header = () => {
     getAllCategory();
   }, []);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      navigate(`/products/search/${value.keyword}`); // Use value.keyword for the search term
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className='header'>
       <div className='brand'>
@@ -87,7 +99,6 @@ const Header = () => {
       </div>
       <div className='header-left '>
         <ul className='list'>
-
           <li>
             <DropdownMenu
               title='Category'
@@ -97,8 +108,14 @@ const Header = () => {
             />
           </li>
           <li>
-            <form action="">
-              <input className='search' type="search" placeholder='search' />
+            <form onSubmit={handleSubmit}>
+              <input
+                className='search'
+                type="search"
+                placeholder='Search'
+                value={value.keyword}
+                onChange={(e) => setValue({ ...value, keyword: e.target.value })}
+              />
             </form>
           </li>
         </ul>
@@ -107,7 +124,9 @@ const Header = () => {
         <h3 onClick={redirect}>
           {curState}
         </h3>
-        <h3>Cart</h3>
+        <Badge count={cart.length} showZero>
+          <NavLink to="/cart">cart </NavLink>
+        </Badge>
       </div>
     </div>
   );

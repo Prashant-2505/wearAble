@@ -1,6 +1,19 @@
 import productModel from '../model/productModel.js'
+import orderModel from '../model/orderModel.js'
 import slugify from 'slugify';
 import fs from 'fs'
+import braintree from 'braintree'
+import dotenv from 'dotenv'
+
+dotenv.config()
+
+// payment gateway
+var gateway = new braintree.BraintreeGateway({
+    environment: braintree.Environment.Sandbox,
+    merchantId: process.env.BRAINTREE_MERCHANT_ID,
+    publicKey: process.env.BRAINTREE_PUBLIC_KEY,
+    privateKey: process.env.BRAINTREE_PRIVATE_KEY,
+});
 
 
 // create product
@@ -260,3 +273,104 @@ export const productByCategory = async (req, res) => {
         });
     }
 };
+
+
+
+// search product
+export const searchProductController = async (req, res) => {
+    try {
+        const { keyword } = req.params;
+        const product = await productModel
+            .find({
+                $or: [
+                    { name: { $regex: keyword, $options: 'i' } },
+                    { description: { $regex: keyword, $options: 'i' } },
+                ],
+            })
+            .select("-photo");
+
+        res.status(201).send({
+            success: true,
+            message: 'Product fetched successfully by search',
+            product,
+        });
+    } catch (error) {
+        console.error("Error in search product:", error);
+        res.status(500).send({
+            success: false,
+            message: "Error in searching products",
+            error: error.message,
+        });
+    }
+};
+
+
+
+
+// payment gateway api
+
+
+
+// payment gateway api
+export const braintreeTokenController = async (req, res) => {
+    try {
+        gateway.clientToken.generate({}, function (err, response) {
+            if (err) {
+                res.status(500).send(err)
+            }
+            else {
+                res.send(response)
+            }
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+// payment
+// payment
+export const braintreePaymentController = async (req, res) => {
+    try {
+        const { cart, nonce,id } = req.body;
+
+        let total = 0;
+        cart.forEach((item) => {
+            total += item.price;
+        });
+
+        // Determine the buyer value based on authentication status
+        const buyer = req.user ? req.user._id : null; // Use null for unauthenticated user
+        
+
+        // Create a new transaction using the gateway
+        gateway.transaction.sale({
+            amount: total.toFixed(2),
+            paymentMethodNonce: nonce,
+            options: {
+                submitForSettlement: true,
+            },
+        }, async (error, result) => {
+            if (result && result.success) {
+                try {
+                    // If the transaction is successful, create and save the order
+                    const order = new orderModel({
+                        products: cart,
+                        payment: result.transaction,
+                        buyer: id,
+                    });
+                    await order.save();
+                    // Respond with success message or order ID
+                    res.status(200).json({ message: 'Order placed successfully', orderId: order._id });
+                } catch (saveError) {
+                    res.status(500).json({ error: 'Failed to save order' });
+                }
+            } else {
+                res.status(500).json({ error: error ? error.message : 'Transaction failed' });
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'An unexpected error occurred' });
+    }
+};
+
