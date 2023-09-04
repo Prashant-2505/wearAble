@@ -8,8 +8,6 @@ import productRoute from './routes/productRoute.js';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import build from './client/build'
-import index from './client/build/index.html'
 
 // Load environment variables
 dotenv.config();
@@ -29,7 +27,7 @@ app.use(express.json({ limit: '20mb' }));
 app.use(cors());
 
 // Serve static files from the 'client/build' directory
-app.use(express.static(path.join(__dirname,build)));
+app.use(express.static(path.join(__dirname,'./client/build')));
 
 // Routes
 app.use('/api/v2/auth', authRoute);
