@@ -38,7 +38,7 @@ app.use('/api/v2/product', productRoute);
 
 // Wildcard route for SPA client-side routing
 app.use('*', function (req, res) {
-  res.sendFile(path.join(__dirname,index));
+  res.sendFile(path.join(__dirname,'./client/build/index.html'));
 });
 
 // Error handling middleware
