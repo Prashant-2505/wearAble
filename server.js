@@ -9,6 +9,7 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+
 // Load environment variables
 dotenv.config();
 
@@ -26,8 +27,11 @@ app.use(morgan('dev'));
 app.use(express.json({ limit: '20mb' }));
 app.use(cors());
 
+
 // Serve static files from the 'client/build' directory
-app.use(express.static(path.join(__dirname,'./client/build')));
+const staticPath = path.join(__dirname, 'client', 'build');
+app.use(express.static(staticPath));
+
 
 // Routes
 app.use('/api/v2/auth', authRoute);
@@ -35,8 +39,8 @@ app.use('/api/v2/category', categoryRoute);
 app.use('/api/v2/product', productRoute);
 
 // Wildcard route for SPA client-side routing
-app.use('*', function (req, res) {
-  res.sendFile(path.join(__dirname,'./client/build/index.html'));
+app.use('*', (req, res)=>{
+  res.sendFile(path.join(__dirname,'../client/build/index.html'));
 });
 
 // Error handling middleware
