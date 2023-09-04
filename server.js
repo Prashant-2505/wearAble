@@ -9,7 +9,6 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-
 // Load environment variables
 dotenv.config();
 
@@ -29,7 +28,7 @@ app.use(cors());
 
 
 // Serve static files from the 'client/build' directory
-const staticPath = path.join(__dirname, 'client', 'build');
+const staticPath = path.join(__dirname, './client/build');
 app.use(express.static(staticPath));
 
 
