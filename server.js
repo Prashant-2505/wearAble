@@ -9,7 +9,6 @@ import cors from 'cors'
 import path from 'path'
 import {fileUrlToPath} from 'url'
 
-
 //config env
 dotenv.config()
 // database config
@@ -29,7 +28,7 @@ app.use(express.json({ limit: '20mb' }));
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(cors())
-app.use(express.static(path.join(__dirname,'../client/build')))
+app.use(express.static(path.join(__dirname,'./client/build')))
 
 // routes
 // auth route
@@ -41,7 +40,7 @@ app.use('/api/v2/product',productRoute)
 
 app.use('*',function(req,res)
 {
-    res.sendFile(path.join(__dirname,'../client/build/index.html'))
+    res.sendFile(path.join(__dirname,'./client/build/index.html'))
 })
 
 
