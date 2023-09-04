@@ -8,10 +8,13 @@ import productRoute from './routes/productRoute.js';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import build from './client/build'
+import index from './client/build/index.html'
 
-// Config env
+// Load environment variables
 dotenv.config();
-// Database config
+
+// Connect to the database
 connectDb();
 
 // ES module fix
@@ -26,7 +29,7 @@ app.use(express.json({ limit: '20mb' }));
 app.use(cors());
 
 // Serve static files from the 'client/build' directory
-app.use(express.static(path.join(__dirname, './client/build')));
+app.use(express.static(path.join(__dirname,build)));
 
 // Routes
 app.use('/api/v2/auth', authRoute);
@@ -35,7 +38,7 @@ app.use('/api/v2/product', productRoute);
 
 // Wildcard route for SPA client-side routing
 app.use('*', function (req, res) {
-  res.sendFile(path.join(__dirname, './client/build/index.html'));
+  res.sendFile(path.join(__dirname,index));
 });
 
 // Error handling middleware
@@ -46,5 +49,5 @@ app.use((err, req, res, next) => {
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
-  console.log(`Server is running at ${port}`.bgYellow);
+  console.log(`Server is running at port ${port}`);
 });
