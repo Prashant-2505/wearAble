@@ -18,6 +18,7 @@ import Product from './page/admin/product/Product';
 import SingleProduct from './page/admin/singleProduct/SingleProduct';
 import ProductDetail from './page/user/product/Product.Detail';
 import Cart from './page/cart/Cart';
+import AllOrders from './page/admin/allOrders/AllOrders';
 
 function App() {
   return (
@@ -44,6 +45,8 @@ function App() {
 
           <Route path='/cart' element={<Cart/>}/>
 
+
+
           {/* Admin route */}
           <Route path="/admin-dashboard" element={<PrivateRoute />}>
             <Route index element={<AdminDasbaord />} />
@@ -64,6 +67,12 @@ function App() {
           <Route path="/admin/product/:slug" element={<PrivateRoute />}>
             <Route path="/admin/product/:slug" element={<SingleProduct />} />
           </Route>
+
+          <Route path="/admin/allOrders" element={<PrivateRoute />}>
+            <Route path="/admin/allOrders" element={<AllOrders />} />
+          </Route>
+
+          
 
         </Routes>
       </BrowserRouter>

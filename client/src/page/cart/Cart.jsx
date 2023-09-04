@@ -1,42 +1,54 @@
-import React, { useEffect, useState } from 'react'
+
+
+import React, { useEffect, useState } from 'react';
 import Layout from '../../layout/Layout';
 import './Cart.css';
 import { useAuth } from '../../context/authContext';
 import { useCart } from '../../context/cart';
 import { useNavigate } from 'react-router-dom';
 import { notification } from 'antd';
-import DropIn from "braintree-web-drop-in-react"
-import axios from 'axios'
+import DropIn from 'braintree-web-drop-in-react';
+import axios from 'axios';
 
 const Cart = () => {
     const [auth, setAuth] = useAuth();
-    const id = auth?.user?._id
+    const id = auth?.user?._id;
     const [cart, setCart] = useCart();
 
-
-    const [clientToken, setClientToken] = useState("")
-    const [instance, setInstance] = useState("")
-    const [loading, setLoading] = useState("")
-
+    const [clientToken, setClientToken] = useState('');
+    const [instance, setInstance] = useState('');
+    const [loading, setLoading] = useState('');
+    const [shippingAddress, setShippingAddress] = useState({
+        fullName: '',
+        addressLine1: '',
+        addressLine2: '',
+        city: '',
+        state: '',
+        postalCode: '',
+        country: '',
+    });
 
     const navigate = useNavigate();
 
     const totalPrice = () => {
         try {
             let total = 0;
-            cart?.map(item => { total += item.price })
-            return total.toLocaleString("en-us", {
-                style: "currency",
-                currency: "USD"
-            })
+            cart?.map((item) => {
+                total += item.price;
+            });
+            return total.toLocaleString('en-us', {
+                style: 'currency',
+                currency: 'USD',
+            });
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
-
+    };
 
     const consolidatedCart = cart.reduce((acc, item) => {
-        const existingItem = acc.find(existing => existing.product._id === item._id);
+        const existingItem = acc.find(
+            (existing) => existing.product._id === item._id
+        );
 
         if (existingItem) {
             existingItem.quantity += 1;
@@ -49,69 +61,72 @@ const Cart = () => {
 
     const removeCartItem = (pid) => {
         try {
-            let myCart = [...cart]
-            let index = myCart.findIndex(item => item._id === pid)
-            myCart.splice(index, 1)
-            setCart(myCart)
-            localStorage.setItem('cart', JSON.stringify(myCart))
+            let myCart = [...cart];
+            let index = myCart.findIndex((item) => item._id === pid);
+            myCart.splice(index, 1);
+            setCart(myCart);
+            localStorage.setItem('cart', JSON.stringify(myCart));
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
 
-    // get pyemnt gateway
-
+    // get payment gateway token
     const getToken = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v2/product/braintree/token`)
-            setClientToken(data?.clientToken)
+            const { data } = await axios.get(
+                `${process.env.REACT_APP_API}/api/v2/product/braintree/token`
+            );
+            setClientToken(data?.clientToken);
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
+
     useEffect(() => {
-        getToken()
-    }, [auth?.token])
+        getToken();
+    }, [auth?.token]);
 
     // handle payment
-  // handle payment
-const handlePayment = async () => {
-    try {
-   
-  
-      const { nonce } = await instance.requestPaymentMethod(); // Corrected method name
-  
-      const { data } = await axios.post(
-        `${process.env.REACT_APP_API}/api/v2/product/braintree/payment`,
-        {
-          nonce,
-          cart,
-          id
+    const handlePayment = async () => {
+        try {
+            const { nonce } = await instance.requestPaymentMethod();
+
+            const { data } = await axios.post(
+                `${process.env.REACT_APP_API}/api/v2/product/braintree/payment`,
+                {
+                    nonce,
+                    cart,
+                    id,
+                    shippingAddress, // Include the shipping address in the request
+                }
+            );
+
+            setLoading(false);
+            localStorage.removeItem('cart');
+            setCart([]);
+            navigate('/');
+            notification.success({
+                message: 'Payment Complete',
+                description: 'Your payment has been successfully completed.',
+            });
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
         }
-      );
-  
-      setLoading(false);
-      localStorage.removeItem('cart');
-      setCart([]);
-      navigate("/");
-      notification.success({
-        message: 'Payment Complete',
-        description: 'Your payment has been successfully completed.',
-      });
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  };
-  
+    };
 
     return (
         <Layout>
             <div className="Cart">
                 <div className="product-details">
                     {auth?.user ? (
-                        <h1>hey, {auth?.user?.name} you have {cart.length} items in your cart</h1>
-                    ) : (<h1>Please, login</h1>)}
+                        <h1>
+                            hey, {auth?.user?.name} you have {cart.length} items in your cart
+                        </h1>
+                    ) : (
+                        <h1>Please, login</h1>
+                    )}
 
                     <div className="cart-info">
                         <div className="product">
@@ -137,35 +152,58 @@ const handlePayment = async () => {
                         <div className="payment-details">
                             <h2>Total Price: {totalPrice()}</h2>
 
-                            {
-                                !clientToken || !cart?.length ? ("")
-                                    :
-                                    (
-                                        <>
-                                            <DropIn
-                                                options={{
-                                                    authorization: clientToken,
-                                                    paypal: {
-                                                        flow: "vault",
-                                                    },
-                                                }}
-                                                onInstance={(instance) => setInstance(instance)}
-                                            />
+                            {/* Shipping Address Input Fields */}
+                            <div className="shipping-address">
+                                <h2>Shipping Address</h2>
+                                <input
+                                    type="text"
+                                    placeholder="Full Name"
+                                    value={auth?.user?.address ? auth.user.address : shippingAddress.fullName}
+                                    onChange={(e) =>
+                                        setShippingAddress({
+                                            ...shippingAddress,
+                                            fullName: e.target.value,
+                                        })
+                                    }
+                                />
+                                if want delivery on different address then please change address in profile section
+                            </div>
+                            {/* End of Shipping Address Input Fields */}
 
-                                        </>
-                                    )
-                            }
-
-                            <button className='payment-btn' onClick={handlePayment} 
-
-                            >{loading ? "Procesing..." : "Make Payment"}</button>
+                            {!clientToken || !cart?.length ? (
+                                ''
+                            ) : (
+                                <>
+                                    <DropIn
+                                        options={{
+                                            authorization: clientToken,
+                                            paypal: {
+                                                flow: 'vault',
+                                            },
+                                        }}
+                                        onInstance={(instance) => setInstance(instance)}
+                                    />
+                                </>
+                            )}
+                            {auth?.user ? (
+                                <button
+                                    className="payment-btn"
+                                    onClick={handlePayment}
+                                >
+                                    {loading ? 'Processing...' : 'Make Payment'}
+                                </button>
+                            ) : (
+                                <button className="payment-btn" onClick={() => navigate('/login')}>
+                                    Please Login for payment
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
-
             </div>
         </Layout>
-    )
-}
+    );
+};
 
 export default Cart;
+

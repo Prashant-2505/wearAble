@@ -1,4 +1,5 @@
 import userModel from "../model/userModel.js"
+import orderModel from '../model/orderModel.js'
 import JWT from 'jsonwebtoken'
 import { hashPassword, comparePassword } from '../helper/authHelper.js'
 
@@ -228,7 +229,70 @@ export const testController = async (req, res) => {
 }
 
 
-export const privateRouteController = async (req,res)=>
-{
+export const privateRouteController = async (req, res) => {
     res.status(200).send({ ok: true });
+}
+
+
+// user order
+export const OrderController = async (req, res) => {
+    try {
+        const { uid } = req.params
+        console.log(uid)
+        const orders = await orderModel
+            .find({ buyer: uid })
+            .populate("products", "-photos")
+            .populate("buyer", "name")
+            .sort({ createdAt: '-1' })
+        res.json(orders)
+    } catch (error) {
+        res.status(500)
+            .send({
+                success: false,
+                message: "Error while getting order",
+                error
+            })
+    }
+}
+
+
+// admin order
+export const allOrderCOntroller = async (req, res) => {
+    try {
+        const orders = await orderModel
+            .find({})
+            .populate("products", "-photos")
+            .populate("buyer", "name")
+            .sort({ createdAt: '-1' })
+        res.json(orders)
+    } catch (error) {
+        res.status(500)
+            .send({
+                success: false,
+                message: "Eroor while getting order",
+                error
+            })
+    }
+}
+
+
+
+// order status
+export const orderStatusController = async (req, res) => {
+    try {
+        const { orderId } = req.params;
+        const { status } = req.body;
+      console.log(orderId)
+        const order = await orderModel.findByIdAndUpdate(orderId, { status }, { new: true });
+
+    
+        res.json(order);
+    } catch (error) {
+        console.error(error); // Log the error for debugging
+        res.status(500).json({
+            success: false,
+            message: "Error while updating order",
+            error: error.message, // Include the error message in the response
+        });
+    }
 }

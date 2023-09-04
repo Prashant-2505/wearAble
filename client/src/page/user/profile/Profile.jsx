@@ -4,18 +4,18 @@ import './Profile.css';
 import { useAuth } from '../../../context/authContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 
 const Profile = () => {
-    const navigate = useNavigate()
-
+    const navigate = useNavigate();
     const [auth, setAuth] = useAuth();
-
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [address, setAddress] = useState('');
     const [phone, setPhone] = useState('');
     const [answer, setAnswer] = useState('');
+    const [orders, setOrders] = useState([]);
 
     // get user data
     useEffect(() => {
@@ -28,10 +28,6 @@ const Profile = () => {
             setAnswer(auth.user.answer);
         }
     }, [auth.user]);
-
-
-
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -59,29 +55,65 @@ const Profile = () => {
         }
     };
 
-
-    const handleLogout = () => {
+    const handleLogout = async () => {
         try {
-            const res = axios.get(`${process.env.REACT_APP_API}/api/v2/auth/logout`)
+            const res = await axios.get(`${process.env.REACT_APP_API}/api/v2/auth/logout`);
             setAuth({
                 user: null,
                 token: ''
-            })
+            });
             localStorage.removeItem('auth');
-            alert('Log out succesfullyy')
-            navigate('/')
-
+            alert('Logged out successfully');
+            navigate('/');
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
+    };
 
-    }
+    // all orders
+    const getOrders = async () => {
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_API}/api/v2/auth/user/all-orders/${auth.user._id}`);
+            if (res) {
+                setOrders(res.data);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        if (auth?.token) {
+            getOrders();
+        }
+    }, [auth?.token]);
 
     return (
         <Layout>
             <div className='profile'>
                 <div className='profile-left'>
-                    <h1>Order</h1>
+                    <h1>Orders</h1>
+                    {orders?.length > 0 ? (
+                        <div className="items">
+                            {orders.map((order) => (
+                                <div items >
+                                    {order.products.map((p, i) => (
+                                        <div onClick={()=>navigate(`/product/${p.slug}`)} className="item">
+                                            <img src={`${process.env.REACT_APP_API}/api/v2/product/get-photo/${p._id}`}
+                                                alt={p.name} />
+                                            <p><span className='value'>Price: </span> {p.price}</p>
+                                            <p><span className='value'>Quantity: </span> {order.products.length}</p>
+                                            <p><span className='value'>Order At: </span> {moment(order.createdAt).fromNow()}</p>
+                                            <p>{order.status}</p>
+                                        </div>
+                                    ))}
+
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p>No orders</p>
+                    )}
                 </div>
                 <div className='profile-right'>
                     <h1>User Profile</h1>
@@ -104,7 +136,7 @@ const Profile = () => {
                     </button>
                 </div>
             </div>
-        </Layout>
+        </Layout >
     );
 };
 

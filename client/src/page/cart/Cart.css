@@ -99,3 +99,17 @@
     padding: 1rem 3rem;
     cursor: pointer;
 }
+
+.shipping-address
+{
+    width: 100%;
+    margin: 1rem 0;
+}
+.shipping-address>input
+{
+    padding: 10px;
+    margin: 10px;
+    width: 100%;
+    border: 1px red solid;
+}
+

@@ -90,6 +90,8 @@ const AdminDashbaord = () => {
 
                             <button onClick={() => navigate('/create-product')}>Create Product</button>
                             <button onClick={() => navigate('/admin/products')}> Product</button>
+                            <button onClick={() => navigate('/admin/allOrders')}> All Orders</button>
+
 
                         </div>
 
