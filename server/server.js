@@ -7,11 +7,19 @@ import categoryRoute from "./routes/categoryRoutes.js"
 import productRoute from './routes/productRoute.js'
 import cors from 'cors'
 import path from 'path'
+import {fileUrlToPath} from 'url'
+
 
 //config env
 dotenv.config()
 // database config
 connectDb()
+
+
+// es module fix
+const __filename = fileUrlToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
 
 const app = express()
 
