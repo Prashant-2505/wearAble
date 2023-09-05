@@ -26,7 +26,7 @@ app.use(morgan('dev'));
 app.use(express.json({ limit: '20mb' }));
 
 // Define staticPath before using it
-const staticPath = path.join(__dirname, './client/build');
+const staticPath = path.join(__dirname, 'client','build');
 app.use(cors());
 app.use(express.static(staticPath));
 
