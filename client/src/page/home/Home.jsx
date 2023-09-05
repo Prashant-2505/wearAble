@@ -1,4 +1,5 @@
 import React from 'react'
+import './Home.css'
 import Layout from '../../layout/Layout'
 import Hero from '../../components/hero/Hero'
 import ProductCrousel from '../../components/ProductCrousel/ProductCrousel'
@@ -10,15 +11,16 @@ const Home = () => {
   return (
 
     <Layout>
-      <Hero />
-      <ProductCrousel />
-      <Hero2 />
-      <Banner />
-      <Sale/>
+      <div className="home">
+        <Hero />
+        <ProductCrousel />
+        <Hero2 />
+        <Banner />
+        <Sale />
+      </div>
     </Layout>
 
   )
 }
 
 export default Home
-  

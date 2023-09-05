@@ -1,52 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import './Header.css';
 import { AiOutlineArrowDown } from 'react-icons/ai';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom'; // Import NavLink from react-router-dom
 import { useAuth } from '../../context/authContext';
 import axios from 'axios';
 import { Badge, notification } from 'antd';
 import { useCart } from '../../context/cart';
 
-const DropdownMenu = ({ title, options, hoveredMenu, setHoveredMenu }) => {
-  const isMenuOpen = hoveredMenu === title;
-  const navigate = useNavigate();
-
-  const handleMenuToggle = () => {
-    setHoveredMenu(isMenuOpen ? null : title);
-  };
-
-  const [cat, setCat] = useState('');
-
-  return (
-    <div onMouseEnter={handleMenuToggle} onMouseLeave={handleMenuToggle}>
-      <button className='D-List'>
-        <h3>{title}</h3>
-        <AiOutlineArrowDown />
-      </button>
-      {isMenuOpen && (
-        <div className='drop-div'>
-          <ul>
-            {options.map((option, index) => (
-              <li key={index} className='drop-list' onClick={() => navigate(`/products/${option._id}`)}>
-                {option.name}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  );
-};
 
 const Header = () => {
-  const [hoveredMenu, setHoveredMenu] = useState(null);
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
   const [auth] = useAuth();
-
-  const [cart] = useCart()
-
+  const [cart] = useCart();
   const [value, setValue] = useState({ keyword: '' }); // Initialize value as an object with a 'keyword' property
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // State for mobile menu
+
+  const handleMobileMenuToggle = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
 
   const curState = auth?.user?.role === 1 ? 'Admin' : auth?.user ? 'Profile' : 'Login';
 
@@ -64,7 +37,7 @@ const Header = () => {
 
   const getAllCategory = async () => {
     try {
-      const { data } = await axios.get(` /api/v2/category/get-category`);
+      const { data } = await axios.get(`/api/v2/category/get-category`); // Removed the extra space before '/api'
       if (data?.success) {
         setCategories(data?.category);
       }
@@ -91,44 +64,53 @@ const Header = () => {
   };
 
   return (
-    <div className='header'>
-      <div className='brand'>
-        <h2 onClick={() => navigate('/')} className='logo'>
-          wearAble
-        </h2>
+    <nav className="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+      <div className="container-fluid">
+        <NavLink className="navbar-brand" to="/">wearAble</NavLink> {/* Use NavLink with 'to' instead of 'href' */}
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" onClick={handleMobileMenuToggle}>
+          <span className="navbar-toggler-icon" />
+        </button>
+        <div className={`collapse navbar-collapse ${mobileMenuOpen ? 'show' : ''}`} id="navbarSupportedContent">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/" exact activeClassName="active">Home</NavLink> {/* Use NavLink with 'to' instead of 'href' */}
+            </li>
+
+            <li className="nav-item dropdown">
+              <NavLink className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Category
+              </NavLink>
+              <ul className="dropdown-menu">
+                {categories.map((option, index) => (
+                  <li className="dropdown-item" key={index}>
+                    <NavLink to={`/products/${option._id}`}>
+                      {option.name}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </li>
+
+
+
+            <li onClick={redirect} className="nav-item">
+              <NavLink className="nav-link active" to="/">{curState}</NavLink> {/* Use NavLink with 'to' instead of 'href' */}
+            </li>
+            <li onClick={redirect} className="nav-item">
+              <NavLink className="nav-link active" to="/">
+                <Badge count={cart.length} showZero>
+                  cart
+                </Badge>
+              </NavLink>
+            </li>
+          </ul>
+          <form className="d-flex" onSubmit={handleSubmit}>
+            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" value={value.keyword} onChange={(e) => setValue({ ...value, keyword: e.target.value })} />
+            <button className="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
       </div>
-      <div className='header-left '>
-        <ul className='list'>
-          <li>
-            <DropdownMenu
-              title='Category'
-              options={categories}
-              hoveredMenu={hoveredMenu}
-              setHoveredMenu={setHoveredMenu}
-            />
-          </li>
-          <li>
-            <form onSubmit={handleSubmit}>
-              <input
-                className='search'
-                type="search"
-                placeholder='Search'
-                value={value.keyword}
-                onChange={(e) => setValue({ ...value, keyword: e.target.value })}
-              />
-            </form>
-          </li>
-        </ul>
-      </div>
-      <div className='header-right'>
-        <h3 onClick={redirect}>
-          {curState}
-        </h3>
-        <Badge count={cart.length} showZero>
-          <NavLink to="/cart">cart </NavLink>
-        </Badge>
-      </div>
-    </div>
+    </nav>
   );
 };
 
