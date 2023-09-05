@@ -37,7 +37,7 @@ app.use('/api/v2/product', productRoute);
 
 // Wildcard route for SPA client-side routing
 app.use('*', (req, res)=>{
-  res.sendFile(path.join(__dirname,'./client/build/index.'));
+  res.sendFile(path.join(__dirname,'client','build','index.html'));
 });
 
 const port = process.env.PORT || 8080;
