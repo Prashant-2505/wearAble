@@ -32,7 +32,7 @@ const CreateProduct = () => {
             productFormData.append("sizes", sizeInput); // Convert the size array to a JSON string
 
             const response = await axios.post(
-                `${process.env.REACT_APP_API}/api/v2/product/create-product`,
+                ` /api/v2/product/create-product`,
                 productFormData
             );
 
@@ -59,7 +59,7 @@ const CreateProduct = () => {
 
     const getAllCategory = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v2/category/get-category`);
+            const { data } = await axios.get(` /api/v2/category/get-category`);
             if (data?.success) {
                 setCategories(data?.category);
             }

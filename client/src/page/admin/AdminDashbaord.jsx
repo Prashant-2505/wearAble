@@ -47,7 +47,7 @@ const AdminDashbaord = () => {
                 answer
             };
 
-            const res = await axios.put(`${process.env.REACT_APP_API}/api/v2/auth/update-profile`, updatedUserData);
+            const res = await axios.put(` /api/v2/auth/update-profile`, updatedUserData);
 
             if (res?.data?.success) {
                 alert(res?.data?.message);
@@ -63,7 +63,7 @@ const AdminDashbaord = () => {
 
     const handleLogout = () => {
         try {
-            const res = axios.get(`${process.env.REACT_APP_API}/api/v2/auth/logout`)
+            const res = axios.get(` /api/v2/auth/logout`)
             setAuth({
                 user: null,
                 token: ''

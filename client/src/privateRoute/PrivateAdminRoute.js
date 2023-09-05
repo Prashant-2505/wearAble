@@ -10,7 +10,7 @@ export default function PrivateRoute() {
   useEffect(() => {
     const authCheck = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_API}/api/v2/auth/admin-auth`, {
+        const res = await axios.get(` /api/v2/auth/admin-auth`, {
           headers: {
             "Authorization": auth?.token
           }

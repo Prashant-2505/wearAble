@@ -42,7 +42,7 @@ const Profile = () => {
                 answer
             };
 
-            const res = await axios.put(`${process.env.REACT_APP_API}/api/v2/auth/update-profile`, updatedUserData);
+            const res = await axios.put(` /api/v2/auth/update-profile`, updatedUserData);
 
             if (res?.data?.success) {
                 alert(res?.data?.message);
@@ -57,7 +57,7 @@ const Profile = () => {
 
     const handleLogout = async () => {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API}/api/v2/auth/logout`);
+            const res = await axios.get(` /api/v2/auth/logout`);
             setAuth({
                 user: null,
                 token: ''
@@ -73,7 +73,7 @@ const Profile = () => {
     // all orders
     const getOrders = async () => {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API}/api/v2/auth/user/all-orders/${auth.user._id}`);
+            const res = await axios.get(` /api/v2/auth/user/all-orders/${auth.user._id}`);
             if (res) {
                 setOrders(res.data);
             }
@@ -99,7 +99,7 @@ const Profile = () => {
                                 <div items >
                                     {order.products.map((p, i) => (
                                         <div onClick={()=>navigate(`/product/${p.slug}`)} className="item">
-                                            <img src={`${process.env.REACT_APP_API}/api/v2/product/get-photo/${p._id}`}
+                                            <img src={` /api/v2/product/get-photo/${p._id}`}
                                                 alt={p.name} />
                                             <p><span className='value'>Price: </span> {p.price}</p>
                                             <p><span className='value'>Quantity: </span> {order.products.length}</p>

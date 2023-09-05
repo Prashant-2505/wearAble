@@ -24,7 +24,7 @@ const AllOrders = () => {
 
 
   const AllOrders = async () => {
-    const res = await axios.get(`${process.env.REACT_APP_API}/api/v2/auth/admin/all-orders`)
+    const res = await axios.get(` /api/v2/auth/admin/all-orders`)
     if (res) {
       setOrders(res.data)
     }
@@ -36,7 +36,7 @@ const AllOrders = () => {
 
   const handleChange = async (id, value) => {
     try {
-      const res = await axios.put(`${process.env.REACT_APP_API}/api/v2/auth/order-status/${id}`, { status: value })
+      const res = await axios.put(` /api/v2/auth/order-status/${id}`, { status: value })
       AllOrders()
     } catch (error) {
       console.log(error)
@@ -52,7 +52,7 @@ const AllOrders = () => {
             {order.products.map((p, j) => (
               <div className="orders">
                 <p>{i + 1}</p>
-                <img src={`${process.env.REACT_APP_API}/api/v2/product/get-photo/${p._id}`}
+                <img src={` /api/v2/product/get-photo/${p._id}`}
                   alt={p.name} />
                 <p><span className='value'>Name: </span> {p.name}</p>
                 <p><span className='value'>Price: </span> {p.price}</p>
@@ -125,7 +125,7 @@ export default AllOrders
 //         o.products.map((p) => (
 //           <div onClick={() => navigate(`/product/${p.slug}`)} className="order-card">
 //             <p key={p._id}>{p.name}</p>
-//             <img src={`${process.env.REACT_APP_API}/api/v2/product/get-photo/${p._id}`}
+//             <img src={` /api/v2/product/get-photo/${p._id}`}
 //               alt={p.name} />
 //             <p>{p.price}</p>
 //           </div>

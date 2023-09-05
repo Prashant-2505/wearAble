@@ -16,7 +16,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post(`${process.env.REACT_APP_API}/api/v2/auth/login`, { email, password })
+            const res = await axios.post(` /api/v2/auth/login`, { email, password })
             if (res?.data?.success) {
                 alert(res?.data?.message)
                 setAuth({

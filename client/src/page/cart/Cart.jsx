@@ -75,7 +75,7 @@ const Cart = () => {
     const getToken = async () => {
         try {
             const { data } = await axios.get(
-                `${process.env.REACT_APP_API}/api/v2/product/braintree/token`
+                ` /api/v2/product/braintree/token`
             );
             setClientToken(data?.clientToken);
         } catch (error) {
@@ -93,7 +93,7 @@ const Cart = () => {
             const { nonce } = await instance.requestPaymentMethod();
 
             const { data } = await axios.post(
-                `${process.env.REACT_APP_API}/api/v2/product/braintree/payment`,
+                ` /api/v2/product/braintree/payment`,
                 {
                     nonce,
                     cart,
@@ -133,7 +133,7 @@ const Cart = () => {
                             {consolidatedCart.map((item) => (
                                 <div key={item.product._id} className="cart-item">
                                     <div className="product-image">
-                                        <img src={`${process.env.REACT_APP_API}/api/v2/product/get-photo/${item.product._id}`} alt="" />
+                                        <img src={` /api/v2/product/get-photo/${item.product._id}`} alt="" />
                                     </div>
                                     <div className="product-info">
                                         <h1>{item.product.name}</h1>

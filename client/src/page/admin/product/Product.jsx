@@ -16,11 +16,11 @@ const Product = ({ isAdmin, byCategory, bySearch }) => {
     try {
       let res;
       if (byCategory) {
-        res = await axios.get(`${process.env.REACT_APP_API}/api/v2/product/category-products/${id}`);
+        res = await axios.get(` /api/v2/product/category-products/${id}`);
       } else if (bySearch) {
-        res = await axios.get(`${process.env.REACT_APP_API}/api/v2/product/search/${keyword}`);
+        res = await axios.get(` /api/v2/product/search/${keyword}`);
       } else {
-        res = await axios.get(`${process.env.REACT_APP_API}/api/v2/product/get-product`);
+        res = await axios.get(` /api/v2/product/get-product`);
       }
 
       if (res.data && res.data.product) {

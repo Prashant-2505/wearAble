@@ -15,7 +15,7 @@ const ProductDetail = () => {
 
   const fetchProduct = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API}/api/v2/product/single-product/${slug}`);
+      const res = await axios.get(` /api/v2/product/single-product/${slug}`);
       if (res?.data) {
         setProduct(res.data.product);
         setLoading(false);
@@ -61,7 +61,7 @@ const ProductDetail = () => {
         {loading ? <p>Loading...</p> : (
           <div className='prod-container'>
             <div className="prod-img">
-              <img src={`${process.env.REACT_APP_API}/api/v2/product/get-photo/${product._id}`}
+              <img src={` /api/v2/product/get-photo/${product._id}`}
                 alt={product.name} />
             </div>
             <div className="prod-data">

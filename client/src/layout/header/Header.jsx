@@ -64,7 +64,7 @@ const Header = () => {
 
   const getAllCategory = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v2/category/get-category`);
+      const { data } = await axios.get(` /api/v2/category/get-category`);
       if (data?.success) {
         setCategories(data?.category);
       }

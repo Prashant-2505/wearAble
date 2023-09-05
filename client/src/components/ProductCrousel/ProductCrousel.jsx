@@ -14,7 +14,7 @@ const ProductCrousel = () => {
 
     const allProducts = async () => {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API}/api/v2/product/get-product/limited`);
+            const res = await axios.get(`/api/v2/product/get-product/limited`);
             if (res?.data) {
                 setProducts(res?.data?.product);
                 setLength(res?.data?.total)

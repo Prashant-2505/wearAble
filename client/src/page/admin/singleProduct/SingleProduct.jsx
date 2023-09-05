@@ -28,7 +28,7 @@ const SingleProduct = () => {
     // single product
     const fetchSingleProduct = async () => {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API}/api/v2/product/single-product/${slug}`);
+            const res = await axios.get(` /api/v2/product/single-product/${slug}`);
             setProductName(res.data.product.name)
             setPrice(res.data.product.price)
             setQuantity(res.data.product.quantity)
@@ -52,7 +52,7 @@ const SingleProduct = () => {
     // all category
     const getAllCategory = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v2/category/get-category`);
+            const { data } = await axios.get(` /api/v2/category/get-category`);
             if (data?.success) {
                 setCategories(data?.category);
             }
@@ -85,7 +85,7 @@ const SingleProduct = () => {
             photos && productFormData.append("photos", photos);
             productFormData.append("colors", colorInput); // Convert the colors array to a JSON string
             const response = await axios.put(
-                `${process.env.REACT_APP_API}/api/v2/product/update-product/${productId}`,
+                ` /api/v2/product/update-product/${productId}`,
                 productFormData
             );
 
@@ -170,7 +170,7 @@ const SingleProduct = () => {
                             (
                                 <div >
                                     <img
-                                        src={`${process.env.REACT_APP_API}/api/v2/product/get-photo/${productId}`}
+                                        src={` /api/v2/product/get-photo/${productId}`}
                                         alt="product_photo"
                                         className="p-img"
                                     />

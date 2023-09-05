@@ -11,7 +11,7 @@ const ProductLayout = ({ name, price, size, color, id, isAdmin }) => {
 
     const deleteProduct = async (pid) => {
         try {
-            const res = await axios.delete(`${process.env.REACT_APP_API}/api/v2/product/delete-product/${pid}`)
+            const res = await axios.delete(` /api/v2/product/delete-product/${pid}`)
             if (res?.data?.success) {
                 alert(res.data.message)
                 navigate('/admin/products')
@@ -32,7 +32,7 @@ const ProductLayout = ({ name, price, size, color, id, isAdmin }) => {
                 >
                     <div className="product-img">
                         <img
-                            src={`${process.env.REACT_APP_API}/api/v2/product/get-photo/${id}`}
+                            src={` /api/v2/product/get-photo/${id}`}
                             className="card-img"
                             alt={name}
                         />
