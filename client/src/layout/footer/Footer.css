@@ -113,3 +113,61 @@
     background: #102833;
     color: white;
 }
+
+
+
+
+
+
+
+
+
+
+/* Extra Small (xs) */
+@media (max-width: 576px) {
+    .Footer {
+        width: 100vw;
+        height: 30vh;
+        
+    }
+    .f1 {
+      display: none;
+    }
+    .f2 {
+        display: none;
+      }
+      .f4 {
+        display: none;
+      }
+      .f3{
+        width: 100%;
+      }
+  
+}
+
+
+/* Small (sm) */
+@media (min-width: 577px) and (max-width: 768px) {}
+
+
+/* Medium (md) */
+@media (min-width: 769px) and (max-width: 992px)
+ {
+    .Footer {
+        width: 100vw;
+        height: 30vh;
+        
+    }
+    .f1 {
+      display: none;
+    }
+    .f2 {
+        display: none;
+      }
+      .f4 {
+        display: none;
+      }
+      .f3{
+        width: 100%;
+      }
+ }

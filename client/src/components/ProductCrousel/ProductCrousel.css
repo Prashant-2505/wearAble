@@ -2,7 +2,8 @@
     position: relative;
     padding: 3rem;
     overflow: hidden;
-
+    height: 100%;
+    width: 100%;
 }
 
 .craousel-component>h1 {
@@ -18,7 +19,7 @@
     padding: 2rem;
     transition: transform 0.3s ease-in-out;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     grid-column-gap: 2rem;
     grid-row-gap: 2rem;
 }
@@ -30,13 +31,50 @@
     justify-content: space-between;
     position: absolute;
     top: 53%;
+
 }
-.crousel-btn>button
-{
-    font-size: 2rem;
+
+.crousel-btn>button {
+    font-size: 1.4rem;
+    border-radius: 90%;
 }
-.c-item
-{
+
+.c-item {
     display: flex;
     justify-content: space-evenly;
+}
+
+
+
+
+/* Extra Small (xs) */
+@media (max-width: 576px) {
+    .craousel-component {
+        width: 100%;
+        padding: 2rem 0;
+    }
+
+    .crousel-product-card {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+
+/* Small (sm) */
+@media (min-width: 577px) and (max-width: 768px) {
+    .crousel-product-card {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+
+    }
+}
+
+
+/* Medium (md) */
+@media (min-width: 769px) and (max-width: 992px) {
+    .crousel-product-card {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+
+    }
 }

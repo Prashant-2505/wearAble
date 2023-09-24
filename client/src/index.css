@@ -12,3 +12,16 @@
     font-family: 'Playfair Display', serif;
     font-family: 'Poppins', sans-serif;
 }
+button
+{
+    border: none;
+}
+.link
+{
+    text-decoration: none;
+    color: black;
+}
+input
+{
+    border: none;
+}

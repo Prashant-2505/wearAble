@@ -27,7 +27,7 @@ const ProductLayout = ({ name, price, size, color, id, isAdmin }) => {
         <>
            
                 <div
-                    className="product-card"
+                    className="product-card "
                     key={id}
                 >
                     <div className="product-img">

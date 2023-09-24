@@ -53,7 +53,7 @@ const Product = ({ isAdmin, byCategory, bySearch }) => {
         ) : (
           <div className='products'>
             {products.map((p) => (
-              <Link key={p._id} to={isAdmin ? `/admin/product/${p.slug}` : `/product/${p.slug}`}>
+              <Link className='link' key={p._id} to={isAdmin ? `/admin/product/${p.slug}` : `/product/${p.slug}`}>
                 <ProductLayout
                   key={p._id}
                   name={p.name}

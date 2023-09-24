@@ -66,3 +66,57 @@
     background: #102833;
     color: white;
 }
+
+
+
+
+
+
+
+
+
+/* Extra Small (xs) */
+@media (max-width: 576px) {
+    .prod-container {
+       flex-direction: column;
+       padding:  2rem;
+       justify-content: center;
+    }
+    .prod-img {
+        width: 100%;
+        height: 40%;
+    } 
+    .prod-data {
+        width: 100%;
+        height: 100%;
+    }
+    .prod-img>img {
+        height: 100%;
+    }
+    .color-container
+    {
+        display: block;
+    }
+}
+
+
+/* Small (sm) */
+@media (min-width: 577px) and (max-width: 768px) {
+    
+
+   
+}
+
+
+/* Medium (md) */
+@media (min-width: 769px) and (max-width: 992px) {
+
+    .Prod-Detail {
+        height: 75vh;
+    }
+    .prod-img {
+        width: 50%;
+        height: 100%;
+    }
+     
+}

@@ -1,6 +1,7 @@
 .Cart {
-    min-height: 80vh;
+    min-height: 80%;
     height: 100%;
+    width: 100%;
     padding-top: 80px;
     text-align: center;
 }
@@ -8,26 +9,29 @@
 
 .product-details {
     padding: 3rem;
-    
+
 }
-.product-details>h1
-{
+
+.product-details>h1 {
     font-size: 2rem;
 }
+
 .cart-info {
     display: flex;
     justify-content: center;
     padding-top: 3rem;
+    height: 100%;
+    width: 100%;
 }
-.product
-{
-  width: 60%;
-  height: 100%;
+
+.product {
+    width: 60%;
+    height: 100%;
 }
-.payment-details
-{
-  width: 40%;
-  height: 100%;
+
+.payment-details {
+    width: 40%;
+    height: 100%;
 }
 
 
@@ -35,81 +39,79 @@
     height: 100%;
     width: 100%;
     border-radius: 10px;
-    display: flex; 
-    align-items: center;
-    justify-content: space-evenly;
+    padding: 1rem 0 ;
     margin-bottom: 1rem;
+    display: flex;
     background: #e0e0e0;
     box-shadow: 20px 20px 60px #bebebe,
         -20px -20px 60px #ffffff;
 }
 
-.product-image
-{
-    width: 30%;
+
+
+.product-image>img {
+    width: 50%;
+    height: 100%;
+    padding: 2re1;
 }
-.product-info
-{
+
+.product-info {
     text-align: left;
+    width: 100%;
 }
-.product-info>h1
-{
+
+.product-info>h1 {
     font-size: 1.2rem;
     font-weight: 500;
 }
-.product-info>p
-{
+
+.product-info>p {
     color: grey;
 }
-.data
-{
+
+.data {
     color: black;
     font-size: 0.8rem;
 }
 
-.remove-btn
-{
-     margin-top: 2rem;  
+.remove-btn {
+    margin-top: 2rem;
 }
-.remove-btn>button
-{
+
+.remove-btn>button {
     padding: 3% 2%;
     border-radius: 10px;
     background: rgb(248, 5, 5);
     color: white;
 }
-.remove-btn>button:hover
-{
+
+.remove-btn>button:hover {
     background: rgb(203, 15, 15);
-    transition:0.2s linear;
+    transition: 0.2s linear;
 }
 
 
 
 
-.payment-details
-{
+.payment-details {
     padding: 1rem;
 }
 
-.payment-btn
-{
+.payment-btn {
     background: green;
     color: white;
     padding: 1rem 3rem;
     cursor: pointer;
 }
 
-.shipping-address
-{
+.shipping-address {
     width: 100%;
     margin: 1rem 0;
 }
-.shipping-address>input
-{
+
+.shipping-address>input {
     padding: 10px;
     margin: 10px;
     width: 100%;
     border: 1px red solid;
 }
-

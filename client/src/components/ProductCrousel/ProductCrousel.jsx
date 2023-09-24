@@ -8,7 +8,7 @@ import { FcNext, FcPrevious } from 'react-icons/fc'
 const ProductCrousel = () => {
     const [products, setProducts] = useState([]);
     const [index, setIndex] = useState(0);
-    const [nextIndex, setNextIndex] = useState(5);
+    const [nextIndex, setNextIndex] = useState(6);
     const [length, setLength] = useState(0)
 
 
@@ -32,15 +32,15 @@ const ProductCrousel = () => {
 
     const previous = () => {
         if (index !== 0) {
-            setIndex(index - 5);
-            setNextIndex(nextIndex - 5);
+            setIndex(index - 6);
+            setNextIndex(nextIndex - 6);
         }
     };
 
     const next = () => {
-        if (index < length - 5) {
+        if (index < length - 6) {
             setIndex(nextIndex);
-            setNextIndex(nextIndex + 5);
+            setNextIndex(nextIndex + 6);
         }
     };
 
@@ -53,7 +53,7 @@ const ProductCrousel = () => {
 
             >
                 {products.slice(index, nextIndex).map((p) => (
-                    <Link to={`/product/${p.slug}`} key={p._id}>
+                    <Link className='link' to={`/product/${p.slug}`} key={p._id }>
                         <ProductCard
                             name={p.name}
                             price={p.price}

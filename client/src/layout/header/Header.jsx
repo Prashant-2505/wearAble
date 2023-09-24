@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './Header.css';
-import { AiOutlineArrowDown } from 'react-icons/ai';
 import { NavLink, useNavigate } from 'react-router-dom'; // Import NavLink from react-router-dom
 import { useAuth } from '../../context/authContext';
 import axios from 'axios';
@@ -65,13 +64,13 @@ const Header = () => {
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary fixed-top">
-      <div className="container-fluid">
+      <div className="container-fluid navitems">
         <NavLink className="navbar-brand" to="/">wearAble</NavLink> {/* Use NavLink with 'to' instead of 'href' */}
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" onClick={handleMobileMenuToggle}>
           <span className="navbar-toggler-icon" />
         </button>
-        <div className={`collapse navbar-collapse ${mobileMenuOpen ? 'show' : ''}`} id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+        <div className={`collapse navbar-collapse  ${mobileMenuOpen ? 'show' : ''}`} id="navbarSupportedContent">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0 li-items">
             <li className="nav-item">
               <NavLink className="nav-link" to="/" exact activeClassName="active">Home</NavLink> {/* Use NavLink with 'to' instead of 'href' */}
             </li>
@@ -83,7 +82,7 @@ const Header = () => {
               <ul className="dropdown-menu">
                 {categories.map((option, index) => (
                   <li className="dropdown-item" key={index}>
-                    <NavLink to={`/products/${option._id}`}>
+                    <NavLink className="link" to={`/products/${option._id}`}>
                       {option.name}
                     </NavLink>
                   </li>
@@ -96,7 +95,7 @@ const Header = () => {
             <li onClick={redirect} className="nav-item">
               <NavLink className="nav-link active" to="/">{curState}</NavLink> {/* Use NavLink with 'to' instead of 'href' */}
             </li>
-            <li onClick={redirect} className="nav-item">
+            <li onClick={()=>{navigate('/cart')}} className="nav-item">
               <NavLink className="nav-link active" to="/">
                 <Badge count={cart.length} showZero>
                   cart
