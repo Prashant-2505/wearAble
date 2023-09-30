@@ -27,7 +27,13 @@ app.use(express.json({ limit: '20mb' }));
 
 // Define staticPath before using it
 const staticPath = path.join(__dirname, 'client','build');
-app.use(cors());
+app.use(cors(
+  {
+    origin:["https://clever-cyan-garb.cyclic.app/"],
+    methods:["POST","PUT","GET","DELETE"],
+    credentials:true
+  }
+));
 app.use(express.static(staticPath));
 
 // Routes
