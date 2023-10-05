@@ -52,11 +52,12 @@
     .craousel-component {
         width: 100%;
         padding: 2rem 0;
+        display: none;
     }
 
-    .crousel-product-card {
-        grid-template-columns: repeat(3, 1fr);
-    }
+  
+    
+    
 }
 
 

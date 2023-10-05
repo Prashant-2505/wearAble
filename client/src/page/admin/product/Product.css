@@ -17,6 +17,7 @@
 
 /* Extra Small (xs) */
 @media (max-width: 576px) {
+  
     .products {
         grid-template-columns: repeat(3, 1fr);
         grid-column-gap: 2rem;
