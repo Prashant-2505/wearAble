@@ -70,8 +70,8 @@ const ProductDetail = () => {
               <div className="color-container">
                 {product.colors.map((c, index) => (
                   <button
-                    className={`color-btn ${product.selectedColor === c ? 'selected' : ''}`}
-                    style={{ background: c }}
+                  className={`color-btn ${product.selectedColor === c ? 'Cselected' : ''}`}
+                  style={{ background: c }}
                     key={index}
                     onClick={() => handleColorSelection(c)}
                   ></button>
@@ -88,6 +88,7 @@ const ProductDetail = () => {
                   </button>
                 ))}
               </div>
+
               <p>Description: <span className='prod-description'>{product.description}</span></p>
               <div className='prod-details-btn'>
                 <button className='btn-1' onClick={addToCart}>

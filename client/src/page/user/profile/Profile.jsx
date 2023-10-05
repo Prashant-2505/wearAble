@@ -98,13 +98,15 @@ const Profile = () => {
                             {orders.map((order) => (
                                 <div items >
                                     {order.products.map((p, i) => (
-                                        <div onClick={()=>navigate(`/product/${p.slug}`)} className="item">
+                                        <div onClick={() => navigate(`/product/${p.slug}`)} className="item">
                                             <img src={` /api/v2/product/get-photo/${p._id}`}
                                                 alt={p.name} />
-                                            <p><span className='value'>Price: </span> {p.price}</p>
-                                            <p><span className='value'>Quantity: </span> {order.products.length}</p>
-                                            <p><span className='value'>Order At: </span> {moment(order.createdAt).fromNow()}</p>
-                                            <p>{order.status}</p>
+                                            <div className="item-data">
+                                                <p><span className='value'>Price: </span> {p.price}</p>
+                                                <p><span className='value'>Quantity: </span> {order.products.length}</p>
+                                                <p><span className='value'>Order At: </span> {moment(order.createdAt).fromNow()}</p>
+                                                <p>{order.status}</p>
+                                            </div>
                                         </div>
                                     ))}
 
