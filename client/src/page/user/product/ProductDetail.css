@@ -104,6 +104,13 @@
 
 /* Extra Small (xs) */
 @media (max-width: 576px) {
+    .Prod-Detail {
+        padding-top: 80px;
+        width: 100vw;
+        height: 100vh;
+        
+    }
+
     .prod-container {
         flex-direction: column;
         padding: 2rem;
