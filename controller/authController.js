@@ -87,8 +87,11 @@ export const loginController = async (req, res) => {
             expiresIn: "7d",
         });
 
-        // Send the token in the response headers
-        res.set('Authorization', ` ${token}`);
+        // Set the token as a cookie
+        res.cookie('token', token, { httpOnly: true, expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) });
+
+
+       
 
         res.status(200).send({
             success: true,
@@ -282,10 +285,10 @@ export const orderStatusController = async (req, res) => {
     try {
         const { orderId } = req.params;
         const { status } = req.body;
-      console.log(orderId)
+        console.log(orderId)
         const order = await orderModel.findByIdAndUpdate(orderId, { status }, { new: true });
 
-    
+
         res.json(order);
     } catch (error) {
         console.error(error); // Log the error for debugging
