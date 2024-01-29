@@ -47,17 +47,20 @@
 
 
 
-/* Extra Small (xs) */
-@media (max-width: 576px) {
+@media (min-width: 350px) and (max-width: 658px) {
     .craousel-component {
+        position: relative;
+        padding: 3rem;
+        overflow: hidden;
+        height: 100%;
         width: 100%;
-        padding: 2rem 0;
-        display: none;
     }
+    .crousel-product-card {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        padding: 0;
 
-  
-    
-    
+    }
 }
 
 
@@ -73,6 +76,16 @@
 
 /* Medium (md) */
 @media (min-width: 769px) and (max-width: 992px) {
+    .crousel-product-card {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+
+    }
+}
+
+
+/* large (md) */
+@media (min-width: 992px) and (max-width: 1024px) {
     .crousel-product-card {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
